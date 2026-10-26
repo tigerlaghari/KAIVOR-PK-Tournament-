@@ -1,0 +1,3175 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FF Tournaments</title>
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #101522;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+h1 { color: #ffb52e; }
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 4px;
+  background: #ffb52e;
+  color: #151515;
+  font-weight: bold;
+}
+.card {
+  background: #202b40;
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 14px;
+}
+.small { color: #b8c5da; }
+</style>
+</head>
+<body>
+
+<h1>🔥 FF Tournaments</h1>
+<p class="small">Free Fire Tournament Hub</p>
+
+<button onclick="show('All')">All</button>
+<button onclick="show('Free')">Free</button>
+<button onclick="show('Paid')">Paid</button>
+
+<div id="list"></div>
+
+<script>
+const tournaments = [
+  {name:"Solo Battle", type:"Free",
+   mode:"Solo", prize:"Demo prize"},
+  {name:"Squad Championship", type:"Paid",
+   mode:"Squad", prize:"Demo prize"},
+  {name:"Duo Challenge", type:"Free",
+   mode:"Duo", prize:"Demo prize"}
+];
+
+function show(filter) {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  tournaments
+    .filter(t => filter === "All" || t.type === filter)
+    .forEach(t => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h2");
+      title.textContent = t.name;
+
+      const details = document.createElement("p");
+      details.textContent =
+        t.mode + " | " + t.type + " Entry";
+
+      const prize = document.createElement("p");
+      prize.textContent = t.prize;
+
+      const join = document.createElement("button");
+      join.textContent = "Join Tournament";
+      join.onclick = () => alert(
+        "Demo: " + t.name +
+        ". Abhi real registration active nahi hai."
+      );
+
+      card.append(title, details, prize, join);
+      list.appendChild(card);
+    });
+}
+
+show("All");
+</script>
+
+</body>
+</html>
+
+<div class="payment-methods">
+  <h3>Choose Payment Method</h3>
+
+  <label>
+    <input type="radio" name="payment" value="JazzCash">
+    JazzCash
+  </label>
+
+  <br><br>
+
+  <label>
+    <input type="radio" name="payment" value="Easypaisa">
+    Easypaisa
+  </label>
+
+  <br><br>
+
+  <button onclick="selectPayment()">
+    Continue
+  </button>
+
+  <p id="payment-message"></p>
+</div>
+
+<script>
+function selectPayment() {
+  const selected = document.querySelector(
+    'input[name="payment"]:checked'
+  );
+
+  const message = document.getElementById(
+    "payment-message"
+  );
+
+  if (!selected) {
+    message.textContent =
+      "Pehle payment method select karein.";
+    return;
+  }
+
+  message.textContent =
+    selected.value +
+    " select ho gaya. Real payment setup abhi baqi hai.";
+}
+</script>
+TOURNAMENTS — ADMIN PANEL UPDATE
+
+INSTALL / UPDATE ON ANDROID
+1. Download and extract this ZIP.
+2. In Acode, open the new index.html from this extracted folder.
+3. Tap Save if you edit it, then tap Preview (triangle icon).
+4. Use the bottom navigation's Admin tab to create, edit, complete, or delete demo tournaments.
+5. In Admin you can also review demo registrations, update registration status, and export a JSON backup.
+
+NOTE ABOUT YOUR OLD FILE
+This update uses localStorage keys fft2_... so it will not automatically import data from your earlier prototype.
+
+IMPORTANT
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FF Tournament</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1118;
+  color: white;
+}
+header {
+  background: #182635;
+  padding: 18px;
+  text-align: center;
+  color: #ffb52e;
+  font-size: 23px;
+  font-weight: bold;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px;
+  background: #111b25;
+}
+nav button, button {
+  border: 0;
+  padding: 11px;
+  border-radius: 8px;
+  background: #ffb52e;
+  color: #151515;
+  font-weight: bold;
+  cursor: pointer;
+}
+nav button { flex: 1; }
+main { padding: 14px; }
+.page { display: none; }
+.page.active { display: block; }
+.card {
+  background: #182635;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 12px 0;
+  border: 1px solid #304454;
+}
+input, select, textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 7px 0 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #405263;
+  background: #0c151e;
+  color: white;
+}
+h2 { color: #ffb52e; }
+small { color: #b7c4ce; }
+</style>
+</head>
+<body>
+
+<header>🔥 FF TOURNAMENT</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('events')">Tournaments</button>
+<button onclick="show('profile')">Profile</button>
+<button onclick="show('entries')">My Entries</button>
+<button onclick="show('leaderboard')">Leaderboard</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+
+<main>
+
+<section id="home" class="page active">
+  <div class="card">
+    <h1>Welcome, Players!</h1>
+    <p>Free Fire community tournaments mein hissa lein.</p>
+    <button onclick="show('events')">View Tournaments</button>
+  </div>
+  <div class="card">
+    <h3>Open Tournaments: <span id="total">0</span></h3>
+    <h3>Registrations: <span id="registered">0</span></h3>
+  </div>
+</section>
+
+<section id="events" class="page">
+  <h2>Available Tournaments</h2>
+  <div id="eventList"></div>
+</section>
+
+<section id="profile" class="page">
+  <h2>Player Profile</h2>
+  <div class="card">
+    <label>Nickname</label>
+    <input id="nickname" placeholder="Free Fire nickname">
+    <label>Free Fire UID</label>
+    <input id="uid" placeholder="Your game UID">
+    <label>Team Name</label>
+    <input id="team" placeholder="Optional team name">
+    <button onclick="saveProfile()">Save Profile</button>
+  </div>
+</section>
+
+<section id="entries" class="page">
+  <h2>My Registrations</h2>
+  <div id="entryList"></div>
+</section>
+
+<section id="leaderboard" class="page">
+  <h2>Leaderboard</h2>
+  <div id="scores"></div>
+</section>
+
+<section id="admin" class="page">
+  <h2>Admin Panel</h2>
+  <p><small>Local demo only. Is panel mein secure admin login nahi hai.</small></p>
+  <div class="card">
+    <label>Tournament Name</label>
+    <input id="eventName" placeholder="Tournament name">
+
+    <label>Game Mode</label>
+    <select id="mode">
+      <option>Solo</option>
+      <option>Duo</option>
+      <option>Squad</option>
+    </select>
+
+    <label>Date</label>
+    <input id="eventDate" type="date">
+
+    <label>Time</label>
+    <input id="eventTime" type="time">
+
+    <label>Maximum Players/Teams</label>
+    <input id="slots" type="number" min="2" value="48">
+
+    <label>Room ID (optional)</label>
+    <input id="room" placeholder="Room ID">
+
+    <label>Room Password (optional)</label>
+    <input id="roomPassword" placeholder="Room password">
+
+    <label>Rules / Details</label>
+    <textarea id="description" placeholder="Tournament rules"></textarea>
+
+    <button onclick="createEvent()">Create Tournament</button>
+  </div>
+  <h3>Manage Tournaments</h3>
+  <div id="manageEvents"></div>
+  <h3>Add Leaderboard Score</h3>
+  <div class="card">
+    <input id="scoreName" placeholder="Player nickname">
+    <input id="scorePoints" type="number" placeholder="Points">
+    <button onclick="addScore()">Save Score</button>
+  </div>
+</section>
+
+</main>
+
+<script>
+const KEY = "ff_tournament_demo";
+let data;
+
+try {
+  data = JSON.parse(localStorage.getItem(KEY));
+} catch(e) {
+  data = null;
+}
+
+if (!data || !Array.isArray(data.events)) {
+  data = {
+    profile: {nickname:"", uid:"", team:""},
+    events: [],
+    entries: [],
+    scores: []
+  };
+}
+
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(data));
+  render();
+}
+
+function show(id) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
+  document.getElementById(id).classList.add("active");
+  render();
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[c]);
+}
+
+function saveProfile() {
+  data.profile = {
+    nickname: document.getElementById("nickname").value.trim(),
+    uid: document.getElementById("uid").value.trim(),
+    team: document.getElementById("team").value.trim()
+  };
+  save();
+  alert("Profile saved on this device.");
+}
+
+function createEvent() {
+  const name = document.getElementById("eventName").value.trim();
+  if (!name) return alert("Tournament name likhein.");
+
+  data.events.push({
+    id: Date.now().toString(),
+    name,
+    mode: document.getElementById("mode").value,
+    date: document.getElementById("eventDate").value,
+    time: document.getElementById("eventTime").value,
+    slots: Math.max(2, Number(document.getElementById("slots").value) || 48),
+    room: document.getElementById("room").value.trim(),
+    password: document.getElementById("roomPassword").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    status: "Open"
+  });
+
+  document.getElementById("eventName").value = "";
+  save();
+  alert("Tournament create ho gaya.");
+}
+
+function joinEvent(id) {
+  const p = data.profile;
+  if (!p.nickname) {
+    alert("Pehle Profile mein nickname save karein.");
+    show("profile");
+    return;
+  }
+
+  const event = data.events.find(e => e.id === id);
+  if (!event || event.status !== "Open") return;
+
+  const count = data.entries.filter(e => e.eventId === id).length;
+  if (count >= event.slots) return alert("Tournament full hai.");
+
+  if (data.entries.some(e =>
+      e.eventId === id && p.uid && e.uid === p.uid)) {
+    return alert("Aap pehle hi register hain.");
+  }
+
+  if (!confirm("Yeh free tournament hai. Register karein?")) return;
+
+  data.entries.push({
+    id: Date.now().toString(),
+    eventId: id,
+    nickname: p.nickname,
+    uid: p.uid,
+    team: p.team
+  });
+
+  save();
+  alert("Registration save ho gayi.");
+}
+
+function cancelEntry(id) {
+  if (!confirm("Registration cancel karein?")) return;
+  data.entries = data.entries.filter(e => e.id !== id);
+  save();
+}
+
+function deleteEvent(id) {
+  if (!confirm("Tournament delete karein?")) return;
+  data.events = data.events.filter(e => e.id !== id);
+  data.entries = data.entries.filter(e => e.eventId !== id);
+  save();
+}
+
+function toggleEvent(id) {
+  const event = data.events.find(e => e.id === id);
+  if (!event) return;
+  event.status = event.status === "Open" ? "Completed" : "Open";
+  save();
+}
+
+function addScore() {
+  const name = document.getElementById("scoreName").value.trim();
+  const points = Number(document.getElementById("scorePoints").value);
+
+  if (!name || !Number.isFinite(points) || points < 0) {
+    return alert("Nickname aur valid points likhein.");
+  }
+
+  data.scores.push({name, points});
+  data.scores.sort((a,b) => b.points - a.points);
+  document.getElementById("scoreName").value = "";
+  document.getElementById("scorePoints").value = "";
+  save();
+}
+
+function render() {
+  const open = data.events.filter(e => e.status === "Open");
+  document.getElementById("total").textContent = open.length;
+  document.getElementById("registered").textContent = data.entries.length;
+
+  document.getElementById("nickname").value = data.profile.nickname || "";
+  document.getElementById("uid").value = data.profile.uid || "";
+  document.getElementById("team").value = data.profile.team || "";
+
+  document.getElementById("eventList").innerHTML = data.events.length
+    ? data.events.map(e => {
+      const count = data.entries.filter(x => x.eventId === e.id).length;
+      return `<div class="card">
+        <h3>${escapeHTML(e.name)}</h3>
+        <p>${escapeHTML(e.mode)} • ${escapeHTML(e.date || "Date TBA")} • ${escapeHTML(e.time || "Time TBA")}</p>
+        <p>${escapeHTML(e.description)}</p>
+        <p>Status: ${escapeHTML(e.status)} | Players/teams: ${count}/${e.slots}</p>
+        <button ${e.status !== "Open" || count >= e.slots ? "disabled" : ""}
+          onclick="joinEvent('${e.id}')">Register Free</button>
+      </div>`;
+    }).join("")
+    : '<div class="card">Abhi koi tournament nahi. Admin panel se create karein.</div>';
+
+  document.getElementById("entryList").innerHTML = data.entries.length
+    ? data.entries.map(e => {
+      const t = data.events.find(x => x.id === e.eventId);
+      return `<div class="card">
+        <b>${escapeHTML(t ? t.name : "Deleted tournament")}</b>
+        <p>${escapeHTML(e.nickname)} ${e.team ? "• " + escapeHTML(e.team) : ""}</p>
+        ${t && t.room ? `<p>Room ID: ${escapeHTML(t.room)}</p>` : ""}
+        ${t && t.password ? `<p>Room password: ${escapeHTML(t.password)}</p>` : ""}
+        <button onclick="cancelEntry('${e.id}')">Cancel</button>
+      </div>`;
+    }).join("")
+    : '<div class="card">Abhi koi registration nahi.</div>';
+
+  document.getElementById("manageEvents").innerHTML = data.events.length
+    ? data.events.map(e => `<div class="card">
+        <b>${escapeHTML(e.name)}</b> — ${escapeHTML(e.status)}
+        <p><button onclick="toggleEvent('${e.id}')">${e.status === "Open" ? "Complete" : "Reopen"}</button>
+        <button onclick="deleteEvent('${e.id}')">Delete</button></p>
+      </div>`).join("")
+    : '<div class="card">No tournaments.</div>';
+
+  document.getElementById("scores").innerHTML = data.scores.length
+    ? data.scores.map((s,i) => `<div class="card">#${i+1} ${escapeHTML(s.name)} — ${s.points} points</div>`).join("")
+    : '<div class="card">Leaderboard abhi empty hai.</div>';
+}
+
+render();
+</script>
+</body>
+</html>
+
+<h2>Tournament Registration</h2>
+
+<label>Free Fire Name</label>
+<input id="playerName" placeholder="Apna game name">
+
+<label>Free Fire UID</label>
+<input id="playerUID" inputmode="numeric"
+       placeholder="Apna UID">
+
+<label>Tournament Mode</label>
+<select id="gameMode">
+  <option>Solo</option>
+  <option>Duo</option>
+  <option>Squad</option>
+</select>
+
+<h3>Entry Fee: Rs 0 (Free)</h3>
+
+<button onclick="registerPlayer()">
+  Register Tournament
+</button>
+
+<p id="message"></p>
+
+<script>
+function registerPlayer() {
+  const name = document.getElementById("playerName")
+    .value.trim();
+
+  const uid = document.getElementById("playerUID")
+    .value.trim();
+
+  const mode = document.getElementById("gameMode")
+    .value;
+
+  if (!name || !uid) {
+    document.getElementById("message").textContent =
+      "Apna game name aur UID dono likhein.";
+    return;
+  }
+
+  const entries = JSON.parse(
+    localStorage.getItem("ffEntries") || "[]"
+  );
+
+  if (entries.some(p => p.uid === uid && p.mode === mode)) {
+    document.getElementById("message").textContent =
+      "Is UID ki is mode mein entry pehle se hai.";
+    return;
+  }
+
+  entries.push({
+    name: name,
+    uid: uid,
+    mode: mode,
+    entryFee: 0,
+    date: new Date().toISOString()
+  });
+
+  localStorage.setItem("ffEntries",
+    JSON.stringify(entries));
+
+  document.getElementById("message").textContent =
+    "Registration save ho gayi! Entry fee Rs 0.";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FF Tournament</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:15px;background:#0c1426;color:white;font-family:Arial}
+header{text-align:center;color:#ffb703;padding:10px}
+.card{background:#192640;padding:16px;border-radius:12px;margin:14px 0}
+input,select,button{width:100%;padding:12px;margin:6px 0;border:0;border-radius:7px}
+input,select{background:#eaf0fa;color:#111}
+button{background:#ffb703;font-weight:bold;cursor:pointer}
+.secondary{background:#334765;color:white}
+.danger{background:#ef5969;color:white}
+.price{color:#ffca28;font-weight:bold}
+.small{font-size:13px;color:#bdc9df}
+</style>
+</head>
+<body>
+
+<header>
+<h1 id="appTitle">🔥 FF Tournament</h1>
+<p>Free Fire Tournament Manager</p>
+</header>
+
+<div class="card">
+<h2>Player Registration Profile</h2>
+<input id="playerName" placeholder="Free Fire In-Game Name">
+<input id="playerUID" placeholder="Free Fire UID">
+<button onclick="saveProfile()">Save Profile</button>
+</div>
+
+<div class="card">
+<h2>Available Tournaments</h2>
+<div id="tournamentList"></div>
+</div>
+
+<div class="card">
+<h2>My Entries</h2>
+<div id="myEntries"></div>
+</div>
+
+<div class="card">
+<h2>Results</h2>
+<div id="results"></div>
+</div>
+
+<div class="card">
+<h2>Admin Login</h2>
+<input id="adminPIN" type="password" placeholder="Admin PIN">
+<button onclick="login()">Login</button>
+<p class="small">Demo PIN: 1234. Real online security is not included.</p>
+</div>
+
+<div id="adminPanel" style="display:none">
+<div class="card">
+<h2>Create Tournament</h2>
+<input id="tName" placeholder="Tournament Name">
+<select id="tMode">
+<option>Solo</option>
+<option>Duo</option>
+<option>Squad</option>
+</select>
+<label>Entry Fee (PKR)</label>
+<input id="tFee" type="number" min="0" value="0">
+<label>Total Slots</label>
+<input id="tSlots" type="number" min="2" value="48">
+<input id="tPrize" placeholder="Prize details">
+<input id="tDate" type="date">
+<input id="tTime" type="time">
+<input id="tRoom" placeholder="Room ID (optional)">
+<input id="tPassword" placeholder="Room Password (optional)">
+<textarea id="tRules" placeholder="Tournament rules" style="width:100%;padding:12px"></textarea>
+<button onclick="createTournament()">Create Tournament</button>
+</div>
+
+<div class="card">
+<h2>Manage Tournaments</h2>
+<div id="manageList"></div>
+</div>
+
+<div class="card">
+<h2>Publish Results</h2>
+<select id="resultTournament"></select>
+<input id="resultName" placeholder="Player Name">
+<input id="resultRank" type="number" min="1" placeholder="Rank">
+<input id="resultPoints" type="number" min="0" placeholder="Points">
+<button onclick="publishResult()">Publish Result</button>
+</div>
+
+<div class="card">
+<h2>App Settings</h2>
+<input id="newAppName" placeholder="New App Name">
+<button onclick="changeAppName()">Change App Name</button>
+<button class="secondary" onclick="backupData()">Download Data Backup</button>
+<button class="danger" onclick="logout()">Lock Admin</button>
+</div>
+</div>
+
+<script>
+const STORAGE_KEY = "ffTournamentApp_v1";
+
+let db;
+try {
+  db = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+} catch (e) {
+  db = {};
+}
+
+db.profile = db.profile || {name:"",uid:""};
+db.tournaments = db.tournaments || [];
+db.entries = db.entries || [];
+db.results = db.results || [];
+db.appName = db.appName || "FF Tournament";
+
+let isAdmin = false;
+
+function saveDB(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  render();
+}
+
+function safe(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function saveProfile(){
+  const name = document.getElementById("playerName").value.trim();
+  const uid = document.getElementById("playerUID").value.trim();
+
+  if(!name || !uid){
+    alert("Name aur UID enter karein.");
+    return;
+  }
+
+  db.profile = {name,uid};
+  saveDB();
+  alert("Profile save ho gaya.");
+}
+
+function login(){
+  if(document.getElementById("adminPIN").value === "1234"){
+    isAdmin = true;
+    document.getElementById("adminPanel").style.display = "block";
+    render();
+    alert("Admin panel open ho gaya.");
+  }else{
+    alert("PIN ghalat hai.");
+  }
+}
+
+function logout(){
+  isAdmin = false;
+  document.getElementById("adminPanel").style.display = "none";
+}
+
+function createTournament(){
+  if(!isAdmin) return alert("Admin login karein.");
+
+  const name = document.getElementById("tName").value.trim();
+  const fee = Number(document.getElementById("tFee").value);
+  const slots = Number(document.getElementById("tSlots").value);
+
+  if(!name || !Number.isFinite(fee) || fee < 0 ||
+     !Number.isInteger(slots) || slots < 2){
+    alert("Tournament name, fee aur slots check karein.");
+    return;
+  }
+
+  db.tournaments.unshift({
+    id: Date.now(),
+    name,
+    mode: document.getElementById("tMode").value,
+    fee,
+    slots,
+    prize: document.getElementById("tPrize").value.trim(),
+    date: document.getElementById("tDate").value,
+    time: document.getElementById("tTime").value,
+    room: document.getElementById("tRoom").value.trim(),
+    password: document.getElementById("tPassword").value.trim(),
+    rules: document.getElementById("tRules").value.trim(),
+    status: "Open"
+  });
+
+  saveDB();
+  ["tName","tPrize","tDate","tTime","tRoom","tPassword","tRules"]
+    .forEach(id => document.getElementById(id).value = "");
+
+  alert("Tournament create ho gaya.");
+}
+
+function registerTournament(id){
+  const p = db.profile;
+  const t = db.tournaments.find(x => x.id === id);
+
+  if(!p.name || !p.uid){
+    alert("Pehle apna profile save karein.");
+    return;
+  }
+
+  if(!t || t.status !== "Open"){
+    alert("Registration band hai.");
+    return;
+  }
+
+  if(db.entries.some(e => e.tid === id && e.uid === p.uid)){
+    alert("Aap pehle registered hain.");
+    return;
+  }
+
+  const count = db.entries.filter(e => e.tid === id).length;
+  if(count >= t.slots){
+    alert("Tournament slots full hain.");
+    return;
+  }
+
+  db.entries.push({
+    tid:id,
+    uid:p.uid,
+    name:p.name,
+    registeredAt:new Date().toISOString()
+  });
+
+  saveDB();
+  alert("Registration successful. Entry fee ki payment is demo mein collect nahi hoti.");
+}
+
+function toggleTournament(id){
+  if(!isAdmin) return;
+  const t = db.tournaments.find(x => x.id === id);
+  if(t) t.status = t.status === "Open" ? "Closed" : "Open";
+  saveDB();
+}
+
+function deleteTournament(id){
+  if(!isAdmin || !confirm("Tournament delete karna hai?")) return;
+  db.tournaments = db.tournaments.filter(t => t.id !== id);
+  db.entries = db.entries.filter(e => e.tid !== id);
+  db.results = db.results.filter(r => r.tid !== id);
+  saveDB();
+}
+
+function publishResult(){
+  if(!isAdmin) return;
+
+  const tid = Number(document.getElementById("resultTournament").value);
+  const name = document.getElementById("resultName").value.trim();
+  const rank = Number(document.getElementById("resultRank").value);
+  const points = Number(document.getElementById("resultPoints").value) || 0;
+
+  if(!tid || !name || !Number.isInteger(rank) || rank < 1){
+    alert("Tournament, player name aur rank enter karein.");
+    return;
+  }
+
+  db.results.unshift({tid,name,rank,points});
+  saveDB();
+  document.getElementById("resultName").value = "";
+  document.getElementById("resultRank").value = "";
+  document.getElementById("resultPoints").value = "";
+  alert("Result publish ho gaya.");
+}
+
+function changeAppName(){
+  if(!isAdmin) return;
+  const name = document.getElementById("newAppName").value.trim();
+  if(!name) return alert("App ka naam enter karein.");
+  db.appName = name;
+  saveDB();
+}
+
+function backupData(){
+  if(!isAdmin) return;
+  const blob = new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "ff-tournament-backup.json";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+
+function render(){
+  document.getElementById("appTitle").textContent = "🔥 " + db.appName;
+  document.getElementById("playerName").value = db.profile.name || "";
+  document.getElementById("playerUID").value = db.profile.uid || "";
+
+  document.getElementById("tournamentList").innerHTML =
+    db.tournaments.map(t => {
+      const count = db.entries.filter(e => e.tid === t.id).length;
+      const joined = db.entries.some(e => e.tid === t.id && e.uid === db.profile.uid);
+
+      return `<div class="card">
+        <h3>${safe(t.name)}</h3>
+        <p>${safe(t.mode)} · ${safe(t.status)}</p>
+        <p class="price">Entry Fee: Rs ${t.fee}</p>
+        <p>Prize: ${safe(t.prize || "Not announced")}</p>
+        <p>Slots: ${count}/${t.slots}</p>
+        <p>${safe(t.date || "Date TBD")} ${safe(t.time || "")}</p>
+        ${t.rules ? `<p>${safe(t.rules)}</p>` : ""}
+        <button onclick="registerTournament(${t.id})" ${joined ? "disabled" : ""}>
+          ${joined ? "Registered" : "Register"}
+        </button>
+      </div>`;
+    }).join("") || "<p>Abhi tournament nahi hai.</p>";
+
+  document.getElementById("myEntries").innerHTML =
+    db.entries.filter(e => e.uid === db.profile.uid).map(e => {
+      const t = db.tournaments.find(x => x.id === e.tid);
+      if(!t) return "";
+      return `<div class="card">
+        <h3>${safe(t.name)}</h3>
+        <p>Entry Fee: Rs ${t.fee}</p>
+        <p>Room ID: ${safe(t.room || "Not published")}</p>
+        <p>Room Password: ${safe(t.password || "Not published")}</p>
+      </div>`;
+    }).join("") || "<p>Abhi aapki entries nahi hain.</p>";
+
+  document.getElementById("results").innerHTML =
+    db.results.map(r => {
+      const t = db.tournaments.find(x => x.id === r.tid);
+      return `<div class="card">
+        <b>${safe(t ? t.name : "Tournament")}</b>
+        <p>${safe(r.name)} — Rank ${r.rank}, Points ${r.points}</p>
+      </div>`;
+    }).join("") || "<p>Results abhi publish nahi huay.</p>";
+
+  if(isAdmin){
+    document.getElementById("manageList").innerHTML =
+      db.tournaments.map(t => `<div class="card">
+        <b>${safe(t.name)}</b>
+        <p>Fee: Rs ${t.fee} · ${safe(t.status)}</p>
+        <button class="secondary" onclick="toggleTournament(${t.id})">
+          ${t.status === "Open" ? "Close Registration" : "Reopen"}
+        </button>
+        <button class="danger" onclick="deleteTournament(${t.id})">Delete</button>
+      </div>`).join("") || "<p>No tournaments.</p>";
+
+    document.getElementById("resultTournament").innerHTML =
+      db.tournaments.map(t =>
+        `<option value="${t.id}">${safe(t.name)}</option>`
+      ).join("");
+  }
+}
+
+render();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FF Tournament</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:15px;background:#0b1222;color:white;font-family:Arial}
+header{text-align:center;color:#ffb703}
+#logo{width:75px;height:75px;object-fit:cover;border-radius:15px}
+.card{background:#192640;padding:15px;border-radius:12px;margin:12px 0}
+input,select,textarea,button{width:100%;padding:12px;margin:6px 0;border:0;border-radius:8px}
+input,select,textarea{background:#edf2ff;color:#111}
+button{background:#ffb703;font-weight:bold}
+.small{font-size:13px;color:#bbc8df}
+.price{color:#ffca28;font-weight:bold}
+</style>
+</head>
+<body>
+<header>
+<img id="logo" alt="App logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='%23ffb703'/%3E%3Ctext x='50%25' y='58%25' font-size='25' text-anchor='middle' fill='%230b1222'%3EFF%3C/text%3E%3C/svg%3E">
+<h1 id="title">FF Tournament</h1>
+<p>Free Fire Tournament Manager</p>
+</header>
+
+<div class="card">
+<h2>Player Profile</h2>
+<input id="playerName" placeholder="Free Fire Name">
+<input id="playerUID" placeholder="Free Fire UID">
+<button onclick="saveProfile()">Save Profile</button>
+</div>
+
+<div class="card">
+<h2>Available Tournaments</h2>
+<div id="tournaments"></div>
+</div>
+
+<div class="card">
+<h2>My Entries</h2>
+<div id="entries"></div>
+</div>
+
+<div class="card">
+<h2>Published Results</h2>
+<div id="results"></div>
+</div>
+
+<div class="card">
+<h2>Admin Login</h2>
+<input id="pin" type="password" placeholder="Admin PIN">
+<button onclick="login()">Login Admin</button>
+<p class="small">Demo PIN: 1234</p>
+</div>
+
+<div id="admin" style="display:none">
+<div class="card">
+<h2>Create Tournament</h2>
+<input id="tName" placeholder="Tournament Name">
+<select id="tMode">
+<option>Solo</option><option>Duo</option><option>Squad</option>
+</select>
+<label>Entry Fee (PKR)</label>
+<input id="tFee" type="number" min="0" value="0">
+<label>Total Slots</label>
+<input id="tSlots" type="number" min="2" value="48">
+<input id="tPrize" placeholder="Prize Details">
+<input id="tDate" type="date">
+<input id="tTime" type="time">
+<input id="tRoom" placeholder="Room ID">
+<input id="tPassword" placeholder="Room Password">
+<textarea id="tRules" placeholder="Tournament Rules"></textarea>
+<button onclick="createTournament()">Create Tournament</button>
+</div>
+
+<div class="card">
+<h2>Logo & App Settings</h2>
+<label>App Name</label>
+<input id="appName" placeholder="New App Name">
+<label>Upload Logo</label>
+<input id="logoFile" type="file" accept="image/*">
+<button onclick="saveSettings()">Save Logo & Name</button>
+</div>
+
+<div class="card">
+<h2>Manage Tournaments</h2>
+<div id="manage"></div>
+</div>
+
+<div class="card">
+<h2>Publish Results</h2>
+<select id="resultTid"></select>
+<input id="resultPlayer" placeholder="Player Name">
+<input id="resultRank" type="number" min="1" placeholder="Rank">
+<input id="resultPoints" type="number" min="0" placeholder="Points">
+<button onclick="publishResult()">Publish Result</button>
+</div>
+
+<div class="card">
+<button onclick="backup()">Download Backup</button>
+<button onclick="logout()">Lock Admin</button>
+</div>
+</div>
+
+<script>
+const KEY="ff_tournament_app_v3";
+const defaultData={
+ profile:{name:"",uid:""},
+ tournaments:[],entries:[],results:[],
+ appName:"FF Tournament",logo:""
+};
+let db;
+try{
+ db={...defaultData,...JSON.parse(localStorage.getItem(KEY)||"{}")};
+}catch(e){db={...defaultData};}
+db.profile=db.profile||{name:"",uid:""};
+db.tournaments=db.tournaments||[];
+db.entries=db.entries||[];
+db.results=db.results||[];
+let adminOn=false;
+
+function safe(v){
+ return String(v??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",
+ '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(db));
+ render();
+}
+function saveProfile(){
+ let name=playerName.value.trim(),uid=playerUID.value.trim();
+ if(!name||!uid)return alert("Name aur UID enter karein.");
+ db.profile={name,uid};save();
+ alert("Profile saved.");
+}
+function login(){
+ if(pin.value==="1234"){
+  adminOn=true;admin.style.display="block";render();
+  alert("Admin unlocked.");
+ }else alert("Wrong PIN.");
+}
+function logout(){adminOn=false;admin.style.display="none";}
+function createTournament(){
+ if(!adminOn)return;
+ let name=tName.value.trim();
+ let fee=Number(tFee.value),slots=Number(tSlots.value);
+ if(!name||!Number.isFinite(fee)||fee<0||
+ !Number.isInteger(slots)||slots<2)
+ return alert("Tournament name, fee aur slots check karein.");
+
+ db.tournaments.unshift({
+  id:Date.now(),name,fee,slots,
+  mode:tMode.value,prize:tPrize.value.trim(),
+  date:tDate.value,time:tTime.value,
+  room:tRoom.value.trim(),password:tPassword.value.trim(),
+  rules:tRules.value.trim(),status:"Open"
+ });
+ save();
+ ["tName","tPrize","tDate","tTime","tRoom","tPassword","tRules"]
+ .forEach(id=>document.getElementById(id).value="");
+ alert("Tournament created.");
+}
+function register(id){
+ let p=db.profile,t=db.tournaments.find(x=>x.id===id);
+ if(!p.name||!p.uid)return alert("Pehle profile save karein.");
+ if(!t||t.status!=="Open")return alert("Registration closed.");
+ if(db.entries.some(e=>e.tid===id&&e.uid===p.uid))
+ return alert("Aap pehle registered hain.");
+ if(db.entries.filter(e=>e.tid===id).length>=t.slots)
+ return alert("Slots full hain.");
+ db.entries.push({tid:id,uid:p.uid,name:p.name});
+ save();
+ alert("Registration successful. Payment is not collected in this demo.");
+}
+function toggleStatus(id){
+ if(!adminOn)return;
+ let t=db.tournaments.find(x=>x.id===id);
+ if(t)t.status=t.status==="Open"?"Closed":"Open";
+ save();
+}
+function removeTournament(id){
+ if(!adminOn||!confirm("Tournament delete karein?"))return;
+ db.tournaments=db.tournaments.filter(t=>t.id!==id);
+ db.entries=db.entries.filter(e=>e.tid!==id);
+ db.results=db.results.filter(r=>r.tid!==id);
+ save();
+}
+function saveSettings(){
+ if(!adminOn)return;
+ let name=appName.value.trim();
+ if(name)db.appName=name;
+ let file=logoFile.files[0];
+ if(file){
+  if(file.size>700000)return alert("700KB se chhoti logo image choose karein.");
+  let reader=new FileReader();
+  reader.onload=()=>{
+   db.logo=reader.result;save();
+   alert("Logo aur app name saved.");
+  };
+  reader.readAsDataURL(file);
+ }else{
+  save();alert("Settings saved.");
+ }
+}
+function publishResult(){
+ if(!adminOn)return;
+ let tid=Number(resultTid.value);
+ let name=resultPlayer.value.trim();
+ let rank=Number(resultRank.value);
+ let points=Number(resultPoints.value)||0;
+ if(!tid||!name||!Number.isInteger(rank)||rank<1)
+ return alert("Tournament, player aur rank enter karein.");
+ db.results.unshift({tid,name,rank,points});
+ save();
+ resultPlayer.value="";resultRank.value="";resultPoints.value="";
+}
+function backup(){
+ if(!adminOn)return;
+ let blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+ let url=URL.createObjectURL(blob);
+ let a=document.createElement("a");
+ a.href=url;a.download="ff-tournament-backup.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function render(){
+ title.textContent=db.appName||"FF Tournament";
+ document.title=title.textContent;
+ if(db.logo)logo.src=db.logo;
+ playerName.value=db.profile.name||"";
+ playerUID.value=db.profile.uid||"";
+ appName.value=db.appName||"";
+ tournaments.innerHTML=db.tournaments.map(t=>{
+  let count=db.entries.filter(e=>e.tid===t.id).length;
+  let joined=db.entries.some(e=>e.tid===t.id&&e.uid===db.profile.uid);
+  return `<div class="card">
+  <h3>${safe(t.name)}</h3>
+  <p>${safe(t.mode)} · ${safe(t.status)}</p>
+  <p class="price">Entry Fee: Rs ${t.fee}</p>
+  <p>Prize: ${safe(t.prize||"Not announced")}</p>
+  <p>Slots: ${count}/${t.slots}</p>
+  <p>${safe(t.date||"Date TBD")} ${safe(t.time||"")}</p>
+  <p>Rules: ${safe(t.rules||"No rules added")}</p>
+  <button onclick="register(${t.id})" ${joined?"disabled":""}>
+  ${joined?"Registered":"Register"}</button></div>`;
+ }).join("")||"<p>No tournaments available.</p>";
+
+ entries.innerHTML=db.entries.filter(e=>e.uid===db.profile.uid)
+ .map(e=>{
+  let t=db.tournaments.find(x=>x.id===e.tid);
+  return t?`<div class="card"><b>${safe(t.name)}</b>
+  <p>Room ID: ${safe(t.room||"Not announced")}</p>
+  <p>Room Password: ${safe(t.password||"Not announced")}</p>
+  </div>`:"";
+ }).join("")||"<p>No entries yet.</p>";
+
+ results.innerHTML=db.results.map(r=>{
+  let t=db.tournaments.find(x=>x.id===r.tid);
+  return `<div class="card"><b>${safe(t?.name||"Tournament")}</b>
+  <p>${safe(r.name)} — Rank ${r.rank}, Points ${r.points}</p></div>`;
+ }).join("")||"<p>No results published.</p>";
+
+ if(adminOn){
+  manage.innerHTML=db.tournaments.map(t=>`
+   <div class="card"><b>${safe(t.name)}</b>
+   <p>Entry fee: Rs ${t.fee} · ${safe(t.status)}</p>
+   <button class="secondary" onclick="toggleStatus(${t.id})">
+   ${t.status==="Open"?"Close Registration":"Reopen"}</button>
+   <button onclick="removeTournament(${t.id})">Delete</button></div>
+  `).join("")||"<p>No tournaments.</p>";
+  resultTid.innerHTML=db.tournaments.map(t=>
+   `<option value="${t.id}">${safe(t.name)}</option>`).join("");
+ }
+}
+render();
+</script>
+</body>
+</html>
+from pathlib import Path
+import zipfile, textwrap
+
+root = Path("/mnt/data/FF_Tournament_Complete_Starter")
+(root/"public").mkdir(parents=True, exist_ok=True)
+(root/"functions").mkdir(parents=True, exist_ok=True)
+
+index_html = r'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><link rel="manifest" href="manifest.json">
+<title>FF Tournament Hub</title>
+<style>
+:root{--bg:#0b1020;--panel:#141d33;--line:#2b3957;--text:#f5f7ff;--muted:#aab6d1;--gold:#ffb000;--green:#32d583;--red:#ff6464}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,Arial}header{padding:15px;display:flex;align-items:center;gap:12px;background:#111a2c;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}header img{width:46px;height:46px;border-radius:12px;object-fit:cover}h1{font-size:19px;margin:0}header small,.muted,.small{color:var(--muted)}nav{display:flex;gap:6px;overflow:auto;padding:9px;background:#0e1628;position:sticky;top:76px;z-index:3}nav button{white-space:nowrap;background:#26334e;color:#fff}nav button.active{background:var(--gold);color:#111}main{max-width:1000px;margin:auto;padding:12px}.panel,.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}label{display:block;margin:8px 0 4px;color:#ccd5e9;font-size:13px}input,select,textarea{width:100%;padding:10px;border-radius:9px;border:1px solid #394967;background:#0c1425;color:#fff;font:inherit}textarea{min-height:70px}button{border:0;border-radius:9px;padding:10px 12px;background:var(--gold);font-weight:750;cursor:pointer;color:#111}button.secondary{background:#2c3a58;color:white}button.danger{background:#8d303d;color:white}button:disabled{opacity:.4}.badge{display:inline-block;border-radius:30px;padding:4px 8px;background:#293954;font-size:12px;margin:2px}.gold{color:var(--gold)}.notice{padding:10px;border-radius:9px;background:#202d49;margin:10px 0;font-size:13px}.small{font-size:12px}.hidden{display:none!important}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:520px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:8px;font-size:13px}footer{text-align:center;color:#7281a0;padding:20px}.empty{padding:20px;text-align:center;color:var(--muted)}details{padding:9px;border-bottom:1px solid var(--line)}@media(max-width:520px){nav{top:0}header{position:relative}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><img id="logo" alt="Logo"><div><h1 id="appName">FF Tournament Hub</h1><small id="userLabel">Not signed in</small></div></header>
+<nav id="nav"></nav><main id="app"><div class="panel">Loading app…</div></main><footer>Free Fire Tournament Hub • Online starter project</footer>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<script>
+/* STEP 1: Replace the values below with your own Firebase web-app config. */
+const firebaseConfig = {
+  apiKey: "PASTE_FIREBASE_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+const PLACEHOLDER = firebaseConfig.apiKey.includes("PASTE_");
+const DEFAULT_LOGO='data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#ffb000"/><path d="M25 18h53v15H42v12h30v14H42v23H25z" fill="#111827"/></svg>');
+let auth,db,storage,me=null,profile=null,page='Home',admin=false;
+let cache={settings:{name:'FF Tournament Hub',logo:DEFAULT_LOGO,rules:'No hacks, no teaming, follow room rules.'},tournaments:[],entries:[],results:[],players:[],teams:[],payments:[],reports:[],notices:[]};
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function msg(s){alert(s)}
+function ready(){return !!db&&!PLACEHOLDER}
+function initFirebase(){if(PLACEHOLDER){render();return}try{firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore();storage=firebase.storage();auth.onAuthStateChanged(async u=>{me=u;profile=null;if(u){let d=await db.collection('users').doc(u.uid).get();profile=d.exists?d.data():null}await loadData();render()})}catch(e){console.error(e);render()}}
+async function loadData(){if(!ready())return;try{let names=['settings','tournaments','entries','results','users','teams','payments','reports','notices'];for(let n of names){let snap=await db.collection(n).get();cache[n==='users'?'players':n]=snap.docs.map(d=>({id:d.id,...d.data()}))}let s=cache.settings.find(x=>x.id==='main');if(s)cache.settings=s}catch(e){console.error(e);}}
+function signed(){if(!me){msg('Please sign in first.');go('Account');return false}return true}
+function isAdmin(){return !!(profile&&profile.role==='admin')}
+const pages=['Home','Tournaments','My Entries','Leaderboard','Results','Teams','Payments','Notifications','Account','Admin'];
+function go(p){page=p;render()}
+function render(){let settings=cache.settings;$('#appName').textContent=settings.name||'FF Tournament Hub';$('#logo').src=settings.logo||DEFAULT_LOGO;$('#userLabel').textContent=me?(profile?.name||me.email)+(isAdmin()?' • ADMIN':''):'Not signed in';$('#nav').innerHTML=pages.filter(p=>p!=='Admin'||isAdmin()).map(p=>`<button class="${p===page?'active':''}" onclick="go('${p}')">${p}</button>`).join('');let fn={Home:home,Tournaments:tournaments,'My Entries':myEntries,Leaderboard:leaderboard,Results:resultsPage,Teams:teamsPage,Payments:paymentsPage,Notifications:noticesPage,Account:accountPage,Admin:adminPage};$('#app').innerHTML=fn[page]();wire()}
+function home(){return `<section class="panel"><h2>Welcome</h2><p class="muted">Join events, submit payment proof, follow results and points.</p><div class="grid"><div class="card">Tournaments <h2>${cache.tournaments.length}</h2></div><div class="card">Players <h2>${cache.players.length}</h2></div><div class="card">Approved results <h2>${cache.results.filter(x=>x.status==='approved').length}</h2></div></div>${PLACEHOLDER?'<div class="notice">Firebase setup required: edit firebaseConfig in index.html and follow README.txt. App features activate after setup.</div>':''}</section><section class="panel"><h2>Upcoming tournaments</h2>${cache.tournaments.filter(t=>t.status==='Open').map(t=>tCard(t)).join('')||'<div class="empty">No open tournaments yet.</div>'}</section>`}
+function tCard(t){let joined=cache.entries.some(e=>e.tournamentId===t.id&&e.uid===me?.uid);let count=cache.entries.filter(e=>e.tournamentId===t.id).length;return `<div class="card"><h3>${esc(t.name)}</h3><span class="badge">${esc(t.mode)}</span><span class="badge">Entry Rs ${Number(t.fee||0)}</span><span class="badge">Prize ${esc(t.prize||'TBA')}</span><span class="badge">${count}/${t.slots} slots</span><p class="small">${esc(t.date||'Date TBA')} • ${esc(t.rules||cache.settings.rules||'')}</p><button onclick="joinEvent('${t.id}')" ${!me||joined||t.status!=='Open'||count>=Number(t.slots)?'disabled':''}>${joined?'Joined':'Join tournament'}</button>${isAdmin()?` <button class="secondary" onclick="closeEvent('${t.id}')">${t.status==='Open'?'Close':'Reopen'}</button> <button class="danger" onclick="removeDoc('tournaments','${t.id}')">Delete</button>`:''}</div>`}
+function tournaments(){return `<section class="panel"><h2>Tournaments</h2>${cache.tournaments.map(t=>tCard(t)).join('')||'<div class="empty">No tournaments yet.</div>'}</section>`}
+async function joinEvent(tid){if(!signed())return;let t=cache.tournaments.find(x=>x.id===tid);if(!t||t.status!=='Open')return msg('Tournament is closed');if(cache.entries.some(e=>e.tournamentId===tid&&e.uid===me.uid))return msg('Already joined');await db.collection('entries').add({tournamentId:tid,uid:me.uid,playerName:profile?.name||me.email,createdAt:firebase.firestore.FieldValue.serverTimestamp(),paymentStatus:Number(t.fee)>0?'unpaid':'not-required'});await loadData();render();msg('Joined. If fee applies, submit payment proof in Payments.')}
+function myEntries(){if(!me)return `<section class="panel">Sign in to view your entries.</section>`;let es=cache.entries.filter(e=>e.uid===me.uid);return `<section class="panel"><h2>My Entries</h2>${es.map(e=>{let t=cache.tournaments.find(t=>t.id===e.tournamentId),r=cache.results.find(r=>r.tournamentId===e.tournamentId&&r.uid===me.uid&&r.status==='approved');return `<div class="card"><h3>${esc(t?.name||'Tournament')}</h3><span class="badge">${esc(e.paymentStatus||'')}</span>${r?`<p>Rank ${r.rank} • Kills ${r.kills} • Points <b class="gold">${r.points}</b></p>`:'<p class="muted">Result not published.</p>'}${t?.status==='Closed'&&e.uid===me.uid?`<p>Room ID: ${esc(t.roomId||'Not shared')} • Password: ${esc(t.roomPass||'Not shared')}</p>`:''}</div>`}).join('')||'<div class="empty">No entries yet.</div>'}</section>`}
+function leaderboard(){let totals={};cache.results.filter(r=>r.status==='approved').forEach(r=>{let x=totals[r.uid]||={name:r.playerName||'Player',points:0,kills:0,wins:0};x.points+=Number(r.points||0);x.kills+=Number(r.kills||0);if(Number(r.rank)===1)x.wins++});let rows=Object.entries(totals).sort((a,b)=>b[1].points-a[1].points);return `<section class="panel"><h2>Leaderboard</h2><div class="tablewrap"><table><tr><th>#</th><th>Player</th><th>Points</th><th>Wins</th><th>Kills</th></tr>${rows.map(([uid,x],i)=>`<tr><td>${i+1}</td><td>${esc(x.name)}</td><td class="gold">${x.points}</td><td>${x.wins}</td><td>${x.kills}</td></tr>`).join('')}</table></div></section>`}
+function resultsPage(){let rs=cache.results.filter(r=>r.status==='approved');return `<section class="panel"><h2>Approved Results</h2><div class="tablewrap"><table><tr><th>Tournament</th><th>Player</th><th>Rank</th><th>Kills</th><th>Points</th><th>Note</th></tr>${rs.map(r=>`<tr><td>${esc(cache.tournaments.find(t=>t.id===r.tournamentId)?.name||'')}</td><td>${esc(r.playerName)}</td><td>${r.rank}</td><td>${r.kills}</td><td>${r.points}</td><td>${esc(r.note)}</td></tr>`).join('')}</table></div></section>`}
+function accountPage(){return `<section class="panel"><h2>Account / Login</h2><form id="authForm"><label>Email</label><input name="email" type="email" required value="${esc(me?.email||'')}"><label>Password (minimum 6 characters)</label><input name="password" type="password" minlength="6" required><div class="row"><button type="button" onclick="authAction('login')">Login</button><button type="button" class="secondary" onclick="authAction('signup')">Create account</button><button type="button" class="secondary" onclick="resetPassword()">Reset password</button></div></form>${me?`<form id="profileForm"><label>Player name</label><input name="name" required value="${esc(profile?.name||'')}"><label>Free Fire UID</label><input name="ffuid" value="${esc(profile?.ffuid||'')}"><button>Save profile</button><button type="button" class="danger" onclick="auth.signOut()">Sign out</button></form>`:''}<p class="small">Create the first account, then assign admin role manually in Firebase Console as described in README. Never allow users to self-assign admin.</p></section>`}
+async function authAction(kind){if(!ready())return msg('First configure Firebase using README.');let f=$('#authForm'),email=f.email.value.trim(),password=f.password.value;if(kind==='login')await auth.signInWithEmailAndPassword(email,password);else{let c=await auth.createUserWithEmailAndPassword(email,password);await db.collection('users').doc(c.user.uid).set({name:email.split('@')[0],ffuid:'',role:'player',createdAt:firebase.firestore.FieldValue.serverTimestamp()})}msg('Done')}
+async function resetPassword(){if(!ready())return msg('Configure Firebase first');let email=$('#authForm').email.value.trim();if(!email)return msg('Enter email first');await auth.sendPasswordResetEmail(email);msg('Password reset email sent')}
+async function wire(){let f=$('#profileForm');if(f)f.onsubmit=async e=>{e.preventDefault();await db.collection('users').doc(me.uid).set({name:f.name.value.trim(),ffuid:f.ffuid.value.trim(),email:me.email,role:profile?.role||'player'},{merge:true});await loadData();render();msg('Profile saved')};f=$('#createT');if(f)f.onsubmit=async e=>{e.preventDefault();let d=Object.fromEntries(new FormData(f));await db.collection('tournaments').add({...d,fee:Number(d.fee),slots:Number(d.slots),status:'Open',createdBy:me.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});await loadData();render()};f=$('#resultForm');if(f)f.onsubmit=async e=>{e.preventDefault();let d=Object.fromEntries(new FormData(f));await db.collection('results').add({...d,tournamentId:d.tournamentId,rank:Number(d.rank),kills:Number(d.kills),points:Number(d.points),status:'pending',createdBy:me.uid,createdAt:firebase.firestore.FieldValue.serverTimestamp()});await loadData();render();msg('Saved pending. Verify before approving.')};f=$('#paymentForm');if(f)f.onsubmit=async e=>{e.preventDefault();let file=f.proof.files[0];if(!file)return msg('Choose screenshot');if(file.size>4*1024*1024)return msg('Image must be under 4MB');let path=`payment-proofs/${me.uid}/${Date.now()}-${file.name.replace(/[^a-z0-9.]/gi,'_')}`,ref=storage.ref(path);await ref.put(file);let url=await ref.getDownloadURL();await db.collection('payments').add({uid:me.uid,tournamentId:f.tournamentId.value,method:f.method.value,reference:f.reference.value,proofUrl:url,status:'pending',createdAt:firebase.firestore.FieldValue.serverTimestamp()});msg('Payment proof submitted for admin review');await loadData();render()};f=$('#teamForm');if(f)f.onsubmit=async e=>{e.preventDefault();let d=Object.fromEntries(new FormData(f));await db.collection('teams').add({name:d.name,leaderUid:me.uid,leaderName:profile?.name||me.email,members:d.members.split(',').map(x=>x.trim()).filter(Boolean),createdAt:firebase.firestore.FieldValue.serverTimestamp()});await loadData();render()};f=$('#reportForm');if(f)f.onsubmit=async e=>{e.preventDefault();await db.collection('reports').add({uid:me.uid,subject:f.subject.value,details:f.details.value,status:'open',createdAt:firebase.firestore.FieldValue.serverTimestamp()});msg('Report submitted');await loadData();render()};f=$('#settingsForm');if(f)f.onsubmit=async e=>{e.preventDefault();let file=f.logo.files[0],logo=cache.settings.logo||DEFAULT_LOGO;if(file){if(file.size>1024*1024)return msg('Logo max 1MB');let ref=storage.ref(`app-assets/logo-${Date.now()}`);await ref.put(file);logo=await ref.getDownloadURL()}await db.collection('settings').doc('main').set({name:f.name.value.trim(),rules:f.rules.value,logo},{merge:true});await loadData();render()}}
+function adminPage(){if(!isAdmin())return '<section class="panel">Admin only.</section>';return `<section class="panel"><h2>Admin dashboard</h2><div class="grid"><div class="card"><h3>Create tournament</h3><form id="createT"><label>Name</label><input name="name" required><label>Mode</label><select name="mode"><option>Solo</option><option>Duo</option><option>Squad</option></select><label>Entry fee Rs</label><input name="fee" type="number" min="0" value="0" required><label>Slots</label><input name="slots" type="number" min="1" value="48" required><label>Prize</label><input name="prize"><label>Date/time</label><input name="date"><label>Room ID</label><input name="roomId"><label>Room password</label><input name="roomPass"><label>Rules</label><textarea name="rules">${esc(cache.settings.rules||'')}</textarea><button>Create tournament</button></form></div><div class="card"><h3>Brand settings</h3><form id="settingsForm"><label>App name</label><input name="name" value="${esc(cache.settings.name)}" required><label>Logo</label><input name="logo" type="file" accept="image/*"><label>Default rules</label><textarea name="rules">${esc(cache.settings.rules||'')}</textarea><button>Save settings</button></form></div></div>
+<div class="card"><h3>Results / points</h3><form id="resultForm"><label>Tournament</label><select name="tournamentId">${cache.tournaments.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select><label>Player UID</label><select name="uid">${cache.players.map(p=>`<option value="${p.id}">${esc(p.name||p.email)} (${p.id})</option>`).join('')}</select><label>Player display name</label><input name="playerName" required><div class="grid"><div><label>Rank</label><input name="rank" type="number" min="1" value="1"></div><div><label>Kills</label><input name="kills" type="number" min="0" value="0"></div><div><label>Points</label><input name="points" type="number" min="0" value="12"></div></div><label>Note</label><input name="note"><button>Save pending result</button></form><p class="small">Suggested points: 1st=12, 2nd=9, 3rd=8, 4th=7, 5th=6, 6th=5, 7th=4, 8th=3, 9th=2, 10th=1 plus 1 per kill.</p><button class="secondary" onclick="autoScore()">Auto-calculate points</button>${cache.results.filter(r=>r.status!=='approved').map(r=>`<div class="row"><span>${esc(r.playerName)} — rank ${r.rank}, kills ${r.kills}, pts ${r.points}</span><button onclick="approve('${r.id}')">Approve</button><button class="danger" onclick="removeDoc('results','${r.id}')">Delete</button></div>`).join('')}</div>
+<div class="card"><h3>Payment proof review</h3>${cache.payments.map(p=>`<div class="row"><span>${esc(p.method)} • ${esc(p.reference)} • ${esc(p.status)} <a href="${esc(p.proofUrl)}" target="_blank" rel="noopener">Open proof</a></span>${p.status==='pending'?`<button onclick="paymentStatus('${p.id}','approved')">Approve</button><button class="danger" onclick="paymentStatus('${p.id}','rejected')">Reject</button>`:''}</div>`).join('')||'<p class="muted">No payment submissions.</p>'}</div>
+<div class="card"><h3>Reports / player moderation</h3>${cache.reports.map(r=>`<div class="row"><span>${esc(r.subject)} — ${esc(r.status)} — ${esc(r.details)}</span><button class="secondary" onclick="reportStatus('${r.id}')">Mark resolved</button></div>`).join('')||'<p class="muted">No reports.</p>'}<p class="small">Ban/unban should be managed in Firebase Authentication/Firestore by the project owner; do not expose a client-side self-service ban toggle.</p></div></section>`}
+function autoScore(){let f=$('#resultForm');if(!f)return;let rank=Number(f.rank.value),kills=Number(f.kills.value),place=({1:12,2:9,3:8,4:7,5:6,6:5,7:4,8:3,9:2,10:1})[rank]||0;f.points.value=place+kills}
+async function approve(id){if(!confirm('Verify screenshot/game result and approve points?'))return;await db.collection('results').doc(id).update({status:'approved',approvedBy:me.uid,approvedAt:firebase.firestore.FieldValue.serverTimestamp()});await loadData();render()}
+async function closeEvent(id){let t=cache.tournaments.find(t=>t.id===id);await db.collection('tournaments').doc(id).update({status:t.status==='Open'?'Closed':'Open'});await loadData();render()}
+async function removeDoc(col,id){if(!confirm('Delete this item?'))return;await db.collection(col).doc(id).delete();await loadData();render()}
+async function paymentStatus(id,status){if(!confirm(`Mark payment ${status}? Only approve after checking the actual transaction in your merchant account.`))return;await db.collection('payments').doc(id).update({status,reviewedBy:me.uid,reviewedAt:firebase.firestore.FieldValue.serverTimestamp()});await loadData();render()}
+async function reportStatus(id){await db.collection('reports').doc(id).update({status:'resolved'});await loadData()
+<header class="app-header">
+  <img id="appLogo" src="logo.png" alt="App Logo">
+  <h1 id="appTitle">FF Tournament Hub</h1>
+</header>
+
+<section class="settings">
+  <h3>App Settings</h3>
+
+  <label>App ka naam:</label>
+  <input id="nameInput" type="text"
+         placeholder="Apni app ka naam likhein">
+
+  <label>Apna logo select karein:</label>
+  <input id="logoInput" type="file" accept="image/*">
+
+  <button onclick="saveAppSettings()">
+    Save Name & Logo
+  </button>
+</section>
+
+const savedName = localStorage.getItem("appName");
+const savedLogo = localStorage.getItem("appLogo");
+
+if (savedName) {
+  document.getElementById("appTitle").textContent = savedName;
+  document.title = savedName;
+}
+
+if (savedLogo) {
+  document.getElementById("appLogo").src = savedLogo;
+}
+
+function saveAppSettings() {
+  const name = document.getElementById("nameInput").value.trim();
+  const file = document.getElementById("logoInput").files[0];
+
+  if (name) {
+    localStorage.setItem("appName", name);
+    document.getElementById("appTitle").textContent = name;
+    document.title = name;
+  }
+
+  if (file) {
+    if (file.size > 1024 * 1024) {
+      alert("Logo 1 MB se chhota select karein.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      localStorage.setItem("appLogo", reader.result);
+      document.getElementById("appLogo").src = reader.result;
+      alert("App name aur logo save ho gaye!");
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    alert("App settings save ho gayi!");
+  }
+}
+npm install @capacitor/core @capacitor/cli
+npm install @capacitor/android
+npx cap add android
+npx cap sync android
+npx cap open android
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <link rel="manifest" href="manifest.json">
+  <title>FF Tournament Hub</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 15px;
+      background: #0b1220;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header, section {
+      background: #131f33;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
+    button {
+      background: #ffb21c;
+      color: #111;
+      padding: 10px;
+      border: 0;
+      border-radius: 8px;
+      margin: 4px;
+    }
+    input, select, textarea {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0 12px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h2 id="appName">FF Tournament Hub</h2>
+    <button onclick="show('tournaments')">Tournaments</button>
+    <button onclick="show('wallet')">Deposit / Withdraw</button>
+    <button onclick="show('account')">Login / Register</button>
+    <button onclick="show('settings')">App Settings</button>
+    <button onclick="show('admin')">Admin</button>
+  </header>
+
+  <section id="tournaments">
+    <h2>Free Fire Tournaments</h2>
+    <div id="tournamentList"></div>
+  </section>
+
+  <section id="wallet" class="hidden">
+    <h2>Deposit Payment</h2>
+    <input id="depositAmount" type="number" placeholder="Amount in Rs">
+    <select id="paymentMethod">
+      <option>JazzCash</option>
+      <option>Easypaisa</option>
+      <option>Bank Transfer</option>
+    </select>
+    <input id="transactionId" placeholder="Transaction ID">
+    <button onclick="deposit()">Submit Deposit Request</button>
+
+    <h2>Withdraw Money</h2>
+    <input id="withdrawAmount" type="number" placeholder="Amount in Rs">
+    <input id="accountNumber" placeholder="Wallet/account number">
+    <button onclick="withdraw()">Withdraw Request</button>
+  </section>
+
+  <section id="account" class="hidden">
+    <h2>Register</h2>
+    <input id="playerName" placeholder="Player name">
+    <input id="playerUID" placeholder="Free Fire UID">
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <h2>Login</h2>
+    <input id="loginUsername" placeholder="Username">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </section>
+
+  <section id="settings" class="hidden">
+    <h2>App Name & Logo</h2>
+    <input id="newName" placeholder="App name">
+    <input id="newLogo" type="file" accept="image/*">
+    <textarea id="rules" placeholder="Tournament rules"></textarea>
+    <button onclick="saveSettings()">Save Settings</button>
+  </section>
+
+  <section id="admin" class="hidden">
+    <h2>Create Tournament</h2>
+    <input id="tournamentName" placeholder="Tournament name">
+    <input id="entryFee" type="number" placeholder="Entry fee (Rs)">
+    <input id="prize" type="number" placeholder="Prize (Rs)">
+    <button onclick="createTournament()">Publish Tournament</button>
+
+    <h2>Publish Winner</h2>
+    <input id="winnerName" placeholder="Winner name">
+    <input id="winnerPoints" type="number" placeholder="Points">
+    <button onclick="publishWinner()">Publish Result</button>
+  </section>
+
+  <script>
+    function show(id) {
+      document.querySelectorAll("body > section").forEach(section => {
+        section.classList.add("hidden");
+      });
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    // Full working demo JavaScript, tournament management,
+    // wallet requests, account handling and settings are
+    // included in the downloadable ZIP's index.html.
+  </script>
+</body>
+</html>{
+  "name": "FF Tournament Hub",
+  "short_name": "FF Tournament",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#101827"
+}const CACHE = "ff-tournament-v1";
+
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE).then(cache =>
+      cache.addAll([
+        "./",
+        "./index.html",
+        "./manifest.json"
+      ])
+    )
+  );
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request).then(
+      cached => cached || fetch(event.request)
+    )
+  );
+});          <div class="search-box">
+  <input
+    type="search"
+    id="tournamentSearch"
+    placeholder="🔍 Search Tournament..."
+    oninput="searchTournament()"
+  >
+</div>
+
+<div id="searchResults"></div>.search-box {
+  margin: 15px 0;
+}
+
+#tournamentSearch {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #34415e;
+  background: #0e172b;
+  color: white;
+  font-size: 17px;
+  box-sizing: border-box;
+}
+
+#tournamentSearch:focus {
+  outline: 2px solid #ffb21c;
+}
+
+#searchResults .tournament-card {
+  background: #17213a;
+  border: 1px solid #34415e;
+  border-radius: 14px;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.tournament-card h3 {
+  color: #ffb21c;
+}
+
+.no-results {
+  color: #ffb21c;
+  padding: 12px 0;
+}function searchTournament() {
+  const query = document
+    .getElementById("tournamentSearch")
+    .value.trim()
+    .toLowerCase();
+
+  const resultsBox = document.getElementById("searchResults");
+
+  // Apne existing tournament list ka container
+  const list = document.getElementById("tournamentList");
+
+  if (!list) {
+    resultsBox.innerHTML =
+      '<p class="no-results">Tournament list nahi mili.</p>';
+    return;
+  }
+
+  const cards = Array.from(list.children);
+
+  let found = 0;
+
+  resultsBox.innerHTML = "";
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+
+    if (text.includes(query)) {
+      const copy = card.cloneNode(true);
+      copy.classList.add("tournament-card");
+      resultsBox.appendChild(copy);
+      found++;
+    }
+  });
+
+  if (found === 0) {
+    resultsBox.innerHTML =
+      '<p class="no-results">Koi tournament nahi mila.</p>';
+  }
+}             <div id="loadingScreen">Loading app...</div>
+
+<script>
+window.addEventListener("load", function () {
+  const loading = document.getElementById("loadingScreen");
+  if (loading) {
+    loading.style.display = "none";
+  }
+});
+</script>     import os, zipfile
+base="/mnt/data/FF_Tournament_All_Requested_Features"
+zip_path="/mnt/data/FF_Tournament_All_Requested_Features.zip"
+print(os.path.exists(zip_path), os.path.getsize(zip_path) if os.path.exists(zip_path) else None)
+  <section class="account-box">
+  <h2>Player Account</h2>
+
+  <h3>Register</h3>
+  <input id="regName" placeholder="Full Name">
+  <input id="regFFName" placeholder="Free Fire Name">
+  <input id="regUID" placeholder="Free Fire UID">
+  <input id="regEmail" type="email" placeholder="Email">
+  <input id="regPassword" type="password"
+         placeholder="Password (minimum 6 characters)">
+  <button onclick="registerPlayer()">Create Account</button>
+
+  <hr>
+
+  <h3>Login</h3>
+  <input id="loginEmail" type="email" placeholder="Email">
+  <input id="loginPassword" type="password" placeholder="Password">
+  <button onclick="loginPlayer()">Login</button>
+  <button onclick="logoutPlayer()">Logout</button>
+
+  <div id="accountMessage"></div>
+  <div id="playerProfile"></div>
+  </section>.account-box {
+  background: #151e35;
+  color: white;
+  padding: 20px;
+  margin: 18px 0;
+  border: 1px solid #293653;
+  border-radius: 18px;
+}
+
+.account-box h2,
+.account-box h3 {
+  color: #ffb21c;
+}
+
+.account-box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  margin: 7px 0 12px;
+  border-radius: 10px;
+  border: 1px solid #34415e;
+  background: #0d1527;
+  color: white;
+  font-size: 16px;
+}
+
+.account-box button {
+  width: 100%;
+  padding: 14px;
+  margin: 6px 0;
+  background: #ffb21c;
+  color: #111;
+  font-weight: bold;
+  border: 0;
+  border-radius: 10px;
+}
+
+#accountMessage,
+#playerProfile {
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}function showAccountMessage(message) {
+  document.getElementById("accountMessage").textContent = message;
+}
+
+function registerPlayer() {
+  showAccountMessage(
+    "Secure registration ke liye Firebase Authentication configure karna zaroori hai."
+  );
+}
+
+function loginPlayer() {
+  showAccountMessage(
+    "Secure login ke liye Firebase Authentication configure karna zaroori hai."
+  );
+}
+
+function logoutPlayer() {
+  document.getElementById("playerProfile").textContent = "";
+  showAccountMessage("Logout ke liye authentication setup zaroori hai.");
+}<section class="wallet-box">
+  <h2>💰 My Wallet</h2>
+  <h3>Balance: Rs <span id="walletBalance">0</span></h3>
+
+  <hr>
+
+  <h3>Deposit Money</h3>
+
+  <label>Amount (Rs)</label>
+  <input type="number" id="depositAmount" min="1"
+         placeholder="Amount enter karein">
+
+  <label>Payment Method</label>
+  <select id="depositMethod">
+    <option value="JazzCash">JazzCash</option>
+    <option value="Easypaisa">Easypaisa</option>
+    <option value="Bank">Bank Transfer</option>
+  </select>
+
+  <label>Transaction ID</label>
+  <input id="transactionId" placeholder="Transaction reference">
+
+  <label>Payment Screenshot</label>
+  <input type="file" id="paymentScreenshot" accept="image/*">
+
+  <button onclick="submitDeposit()">Deposit Request</button>
+
+  <hr>
+
+  <h3>Withdraw Money</h3>
+
+  <label>Amount (Rs)</label>
+  <input type="number" id="withdrawAmount" min="1"
+         placeholder="Withdraw amount">
+
+  <label>Payment Method</label>
+  <select id="withdrawMethod">
+    <option value="JazzCash">JazzCash</option>
+    <option value="Easypaisa">Easypaisa</option>
+    <option value="Bank">Bank Transfer</option>
+  </select>
+
+  <label>Account Title</label>
+  <input id="accountTitle" placeholder="Account holder name">
+
+  <label>Wallet / Account Number</label>
+  <input id="accountNumber" placeholder="03XXXXXXXXX">
+
+  <button onclick="submitWithdraw()">Withdraw Request</button>
+
+  <p id="walletMessage"></p>
+  <h3>My Requests</h3>
+  <div id="walletRequests"></div>
+</section>.wallet-box {
+  background: #131f33;
+  color: white;
+  padding: 18px;
+  border-radius: 15px;
+  margin: 15px 0;
+}
+
+.wallet-box h2,
+.wallet-box h3 {
+  color: #ffb21c;
+}
+
+.wallet-box input,
+.wallet-box select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 6px 0 14px;
+  border-radius: 8px;
+  border: 1px solid #344761;
+  background: #0b1424;
+  color: white;
+}
+
+.wallet-box button {
+  width: 100%;
+  padding: 13px;
+  margin: 6px 0;
+  border: 0;
+  border-radius: 9px;
+  background: #ffb21c;
+  font-weight: bold;
+}// Demo only: requests are saved on this device.
+let walletRequests = JSON.parse(
+  localStorage.getItem("walletRequests") || "[]"
+);
+
+function saveWalletRequests() {
+  localStorage.setItem(
+    "walletRequests",
+    JSON.stringify(walletRequests)
+  );
+  renderWalletRequests();
+}
+
+function submitDeposit() {
+  const amount = Number(
+    document.getElementById("depositAmount").value
+  );
+  const method =
+    document.getElementById("depositMethod").value;
+  const transactionId =
+    document.getElementById("transactionId").value.trim();
+
+  if (amount <= 0 || !transactionId) {
+    alert("Amount aur transaction ID enter karein.");
+    return;
+  }
+
+  walletRequests.unshift({
+    type: "Deposit",
+    amount,
+    method,
+    reference: transactionId,
+    status: "Pending admin verification",
+    date: new Date().toLocaleString()
+  });
+
+  saveWalletRequests();
+
+  document.getElementById("walletMessage").textContent =
+    "Deposit request submit ho gayi. Verification ka intezar karein.";
+}
+
+function submitWithdraw() {
+  const amount = Number(
+    document.getElementById("withdrawAmount").value
+  );
+  const method =
+    document.getElementById("withdrawMethod").value;
+  const title =
+    document.getElementById("accountTitle").value.trim();
+  const account =
+    document.getElementById("accountNumber").value.trim();
+
+  if (amount <= 0 || !title || !account) {
+    alert("Amount aur account details fill karein.");
+    return;
+  }
+
+  walletRequests.unshift({
+    type: "Withdraw",
+    amount,
+    method,
+    accountTitle: title,
+    account,
+    status: "Pending admin review",
+    date: new Date().toLocaleString()
+  });
+
+  saveWalletRequests();
+
+  document.getElementById("walletMessage").textContent =
+    "Withdrawal request submit ho gayi.";
+}
+
+function renderWalletRequests() {
+  const box = document.getElementById("walletRequests");
+  if (!box) return;
+
+  box.replaceChildren();
+
+  walletRequests.forEach(request => {
+    const item = document.createElement("div");
+    item.style.cssText =
+      "padding:12px;border-bottom:1px solid #344761";
+
+    item.textContent =
+      request.type + " • Rs " + request.amount +
+      " • " + request.method + " • " +
+      request.status + " • " + request.date;
+
+    box.appendChild(item);
+  });
+}
+
+renderWalletRequests();
+<section class="feature-box">
+  <h2>🏆 Tournament Results</h2>
+
+  <input id="resultTournament"
+    placeholder="Tournament ka naam">
+
+  <input id="winnerName"
+    placeholder="Winner ka naam">
+
+  <input id="winnerUID"
+    placeholder="Winner ki Free Fire UID">
+
+  <input id="winnerPrize"
+    type="number"
+    placeholder="Prize amount">
+
+  <button onclick="announceWinner()">
+    Announce Winner
+  </button>
+
+  <div id="winnerResults"></div>
+</section>
+
+function announceWinner() {
+  const tournament =
+    document.getElementById("resultTournament").value.trim();
+  const name =
+    document.getElementById("winnerName").value.trim();
+  const uid =
+    document.getElementById("winnerUID").value.trim();
+  const prize =
+    Number(document.getElementById("winnerPrize").value);
+
+  if (!tournament || !name || !uid || prize < 0 ||
+      document.getElementById("winnerPrize").value === "") {
+    alert("Tamam details sahi bharo.");
+    return;
+  }
+
+  const results = JSON.parse(
+    localStorage.getItem("ffResults") || "[]"
+  );
+
+  results.unshift({
+    tournament, name, uid, prize,
+    date: new Date().toLocaleDateString()
+  });
+
+  localStorage.setItem("ffResults", JSON.stringify(results));
+  showWinnerResults();
+  alert("Winner result save ho gaya!");
+}
+
+function showWinnerResults() {
+  const results = JSON.parse(
+    localStorage.getItem("ffResults") || "[]"
+  );
+
+  document.getElementById("winnerResults").innerHTML =
+    results.map(r => `
+      <div class="feature-box">
+        <h3>🏆 ${escapeHTML(r.tournament)}</h3>
+        <p>Winner: ${escapeHTML(r.name)}</p>
+        <p>UID: ${escapeHTML(r.uid)}</p>
+        <p>Prize: Rs. ${r.prize}</p>
+        <small>${escapeHTML(r.date)}</small>
+      </div>
+    `).join("");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+showWinnerResults();
+
+<section class="feature-box">
+  <img src="icons/icon-192.png"
+       alt="App Logo"
+       width="90">
+
+  <h2 id="appTitle">FF Tournament</h2>
+  <p>Apna tournament khelo aur jeeto!</p>
+
+  <h3>📜 Tournament Rules</h3>
+  <ul>
+    <li>Match mein cheating allowed nahi.</li>
+    <li>Apni Free Fire UID sahi enter karo.</li>
+    <li>Room ID aur password waqt par check karo.</li>
+    <li>Fake payment proof submit na karo.</li>
+    <li>Winner ka faisla tournament admin karega.</li>
+  </ul>
+</section>
+
+<section class="feature-box">
+  <h2>📢 Tournament Notices</h2>
+
+  <input id="noticeTitle"
+         placeholder="Notice title">
+
+  <textarea id="noticeText"
+            placeholder="Notice ki details"></textarea>
+
+  <button onclick="addNotice()">Publish Notice</button>
+
+  <div id="noticeList"></div>
+</section>
+
+function addNotice() {
+  const title = document.getElementById("noticeTitle").value.trim();
+  const message = document.getElementById("noticeText").value.trim();
+
+  if (!title || !message) {
+    alert("Notice title aur details likho.");
+    return;
+  }
+
+  const notices = JSON.parse(
+    localStorage.getItem("ffNotices") || "[]"
+  );
+
+  notices.unshift({
+    title,
+    message,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("ffNotices", JSON.stringify(notices));
+
+  document.getElementById("noticeTitle").value = "";
+  document.getElementById("noticeText").value = "";
+
+  showNotices();
+}
+
+function showNotices() {
+  const notices = JSON.parse(
+    localStorage.getItem("ffNotices") || "[]"
+  );
+
+  document.getElementById("noticeList").innerHTML =
+    notices.map(n => `
+      <div class="feature-box">
+        <h3>${escapeHTML(n.title)}</h3>
+        <p>${escapeHTML(n.message)}</p>
+        <small>${escapeHTML(n.date)}</small>
+      </div>
+    `).join("");
+}
+
+showNotices();
+
+.feature-box {
+  background: #18212d;
+  color: white;
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: 1px solid #344252;
+}
+
+.feature-box input,
+.feature-box textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #64748b;
+}
+
+.feature-box button {
+  background: #16a34a;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 5px 0;
+}
+
+<section class="auth-box">
+  <h2>🔥 FF Tournament</h2>
+  <h3 id="authHeading">Create Account</h3>
+
+  <input id="authUsername" type="text"
+         placeholder="Username">
+
+  <input id="authEmail" type="email"
+         placeholder="Email address">
+
+  <input id="authPassword" type="password"
+         placeholder="Password">
+
+  <button id="registerBtn" onclick="registerUser()">
+    Register
+  </button>
+
+  <button id="loginBtn" onclick="loginUser()">
+    Login
+  </button>
+
+  <p id="authMessage"></p>
+
+  <div id="userDashboard" hidden>
+    <h3>Welcome, <span id="loggedInName"></span>!</h3>
+    <p>Ab tum tournament section dekh sakte ho.</p>
+    <button onclick="logoutUser()">Logout</button>
+  </div>
+</section>
+
+.auth-box {
+  max-width: 420px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #17212b;
+  color: white;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.auth-box input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0;
+  padding: 13px;
+  border: 1px solid #475569;
+  border-radius: 8px;
+}
+
+.auth-box button {
+  padding: 12px 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  cursor: pointer;
+}
+
+#authMessage {
+  overflow-wrap: anywhere;
+}
+
+function registerUser() {
+  const username = document.getElementById("authUsername").value.trim();
+  const email = document.getElementById("authEmail").value.trim().toLowerCase();
+  const password = document.getElementById("authPassword").value;
+
+  if (!username || !email || password.length < 6) {
+    showAuthMessage("Username, valid email aur kam az kam 6-character password likho.");
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem("ffUsers") || "[]");
+
+  if (users.some(user => user.email === email)) {
+    showAuthMessage("Is email ka account pehle se hai. Login karo.");
+    return;
+  }
+
+  // Sirf local demo ke liye. Real app mein password
+  // ko is tarah localStorage mein save nahi karna chahiye.
+  users.push({ username, email, password });
+
+  localStorage.setItem("ffUsers", JSON.stringify(users));
+  localStorage.setItem("ffCurrentUser", email);
+
+  showDashboard(username);
+  showAuthMessage("Account ban gaya!");
+}
+
+function loginUser() {
+  const email = document.getElementById("authEmail").value.trim().toLowerCase();
+  const password = document.getElementById("authPassword").value;
+
+  const users = JSON.parse(localStorage.getItem("ffUsers") || "[]");
+  const user = users.find(
+    item => item.email === email && item.password === password
+  );
+
+  if (!user) {
+    showAuthMessage("Email ya password ghalat hai.");
+    return;
+  }
+
+  localStorage.setItem("ffCurrentUser", user.email);
+  showDashboard(user.username);
+  showAuthMessage("Login successful!");
+}
+
+function showDashboard(username) {
+  document.getElementById("authHeading").hidden = true;
+  document.getElementById("authUsername").hidden = true;
+  document.getElementById("authEmail").hidden = true;
+  document.getElementById("authPassword").hidden = true;
+  document.getElementById("registerBtn").hidden = true;
+  document.getElementById("loginBtn").hidden = true;
+
+  document.getElementById("loggedInName").textContent = username;
+  document.getElementById("userDashboard").hidden = false;
+}
+
+function showAuthMessage(message) {
+  document.getElementById("authMessage").textContent = message;
+}
+
+function logoutUser() {
+  localStorage.removeItem("ffCurrentUser");
+  document.getElementById("userDashboard").hidden = true;
+
+  document.getElementById("authHeading").hidden = false;
+  document.getElementById("authUsername").hidden = false;
+  document.getElementById("authEmail").hidden = false;
+  document.getElementById("authPassword").hidden = false;
+  document.getElementById("registerBtn").hidden = false;
+  document.getElementById("loginBtn").hidden = false;
+
+  document.getElementById("authPassword").value = "";
+  showAuthMessage("Logout ho gaya.");
+}
+from pathlib import Path
+import zipfile, textwrap, json, os
+
+base = Path("/mnt/data/ff_tournament_complete")
+base.mkdir(exist_ok=True)
+html = r'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101820">
+<title>FF Tournament</title>
+<style>
+:root{--bg:#0b1118;--panel:#172330;--line:#304253;--text:#f4f7fb;--muted:#a9bac9;--green:#18b56b;--gold:#ffbf36;--red:#ef5350}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,Arial,sans-serif}
+header{padding:18px 14px;text-align:center;background:linear-gradient(135deg,#102b25,#172330);border-bottom:1px solid var(--line)}
+header h1{margin:4px 0;font-size:26px}header p{margin:4px;color:var(--muted)}
+nav{display:flex;gap:7px;overflow:auto;padding:10px;background:#101820;position:sticky;top:0;z-index:2}
+nav button{white-space:nowrap;width:auto;margin:0;padding:9px 12px}
+main{max-width:900px;margin:auto;padding:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}
+h2{margin:0 0 12px;font-size:21px}h3{margin:8px 0}p,small{line-height:1.45}.muted{color:var(--muted)}
+input,select,textarea{width:100%;padding:12px;margin:6px 0 10px;background:#0d151d;color:var(--text);border:1px solid #405366;border-radius:8px;font:inherit}
+button{background:var(--green);color:#04130c;border:0;border-radius:8px;padding:11px 14px;font-weight:700;cursor:pointer;margin:4px 4px 4px 0}
+button.secondary{background:#33485a;color:white}button.danger{background:var(--red);color:white}button.gold{background:var(--gold)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.item{border:1px solid var(--line);border-radius:10px;padding:12px;margin:9px 0;background:#101a24}
+.badge{display:inline-block;background:#29443a;color:#9ff0c6;padding:3px 8px;border-radius:99px;font-size:12px}
+.hidden{display:none!important}#msg{padding:8px;color:#ffdf8a;overflow-wrap:anywhere}footer{text-align:center;color:var(--muted);padding:22px;font-size:12px}
+a{color:#9fe8c4}ul{padding-left:22px}.inline{display:flex;gap:8px;align-items:center}.inline>*{flex:1}
+</style>
+</head>
+<body>
+<header><div style="font-size:34px">🔥🏆</div><h1 id="brandTitle">FF Tournament</h1><p>Join • Compete • Win</p></header>
+<nav>
+<button onclick="showTab('auth')">Account</button><button onclick="showTab('tournaments')">Tournaments</button>
+<button onclick="showTab('wallet')">Wallet</button><button onclick="showTab('results')">Results</button>
+<button onclick="showTab('leaderboard')">Leaderboard</button><button onclick="showTab('notices')">Notices</button>
+<button onclick="showTab('rules')">Rules / Support</button><button onclick="showTab('admin')">Admin</button>
+</nav>
+<main>
+<div id="msg" role="status"></div>
+<section id="tab-auth" class="panel">
+<h2>Login / Register</h2><div id="authForm" class="row">
+<div><label>Username</label><input id="username" placeholder="Username (register only)"></div>
+<div><label>Email</label><input id="email" type="email" placeholder="name@example.com"></div>
+<div><label>Password</label><input id="password" type="password" placeholder="At least 6 characters"></div></div>
+<button onclick="register()">Register</button><button class="secondary" onclick="login()">Login</button>
+<div id="session" class="item hidden"></div><button id="logoutBtn" class="danger hidden" onclick="logout()">Logout</button>
+<p class="muted">Demo only: accounts are stored on this device. Do not use a real password.</p>
+</section>
+<section id="tab-tournaments" class="panel hidden"><h2>🎮 Tournaments</h2>
+<input id="search" placeholder="Search tournament..." oninput="renderTournaments()">
+<div id="tournamentList"></div></section>
+<section id="tab-wallet" class="panel hidden"><h2>💰 Wallet</h2>
+<p>Demo balance: <strong id="balance">Rs. 0</strong></p><div class="row">
+<div class="item"><h3>Deposit request</h3><input id="depAmount" type="number" min="1" placeholder="Amount in Rs"><select id="depMethod"><option>EasyPaisa</option><option>JazzCash</option><option>Bank transfer</option></select><input id="depTxn" placeholder="Transaction/reference ID"><button onclick="deposit()">Submit deposit request</button></div>
+<div class="item"><h3>Withdraw request</h3><input id="withAmount" type="number" min="1" placeholder="Amount in Rs"><select id="withMethod"><option>EasyPaisa</option><option>JazzCash</option><option>Bank transfer</option></select><input id="withAccount" placeholder="Account number / wallet number"><button onclick="withdraw()">Submit withdraw request</button></div>
+</div><h3>My requests</h3><div id="myRequests"></div>
+<p class="muted">Requests do not move real money. Admin approval is only a local demo.</p></section>
+<section id="tab-results" class="panel hidden"><h2>🏆 Winners & Results</h2><div id="resultsList"></div></section>
+<section id="tab-leaderboard" class="panel hidden"><h2>⭐ Leaderboard</h2><div id="leaderboardList"></div></section>
+<section id="tab-notices" class="panel hidden"><h2>📢 Notices</h2><div id="noticeList"></div></section>
+<section id="tab-rules" class="panel hidden"><h2>📜 Rules & Support</h2><ul><li>No cheating, hacks, teaming or abusive behavior.</li><li>Enter your correct in-game name and UID.</li><li>Join only if you agree to the entry fee and rules.</li><li>Room details should only be shared with joined players.</li><li>Prizes and disputes must be handled transparently by the organizer.</li></ul>
+<h3>Contact / Support</h3><p id="supportText">Set your support number in Admin settings.</p><button onclick="contactSupport()">Contact on WhatsApp</button></section>
+<section id="tab-admin" class="panel hidden"><h2>🔐 Admin Panel</h2>
+<div id="adminLogin"><p class="muted">Demo admin PIN: <strong>1234</strong>. Change it before testing; this PIN is not secure for a public app.</p><input id="adminPin" type="password" placeholder="Admin PIN"><button onclick="adminUnlock()">Unlock admin</button></div>
+<div id="adminControls" class="hidden">
+<h3>Create tournament</h3><div class="row"><input id="tName" placeholder="Tournament name"><input id="tGame" placeholder="Mode/map (e.g. Squad Bermuda)"><input id="tFee" type="number" min="0" placeholder="Entry fee Rs"><input id="tPrize" type="number" min="0" placeholder="Prize Rs"><input id="tSlots" type="number" min="1" placeholder="Total slots"></div><button onclick="createTournament()">Create tournament</button>
+<h3>Room details</h3><input id="roomTournament" placeholder="Exact tournament name"><input id="roomId" placeholder="Room ID"><input id="roomPass" placeholder="Room password"><button onclick="saveRoom()">Save room details</button>
+<h3>Publish notice</h3><input id="nTitle" placeholder="Notice title"><textarea id="nText" placeholder="Notice details"></textarea><button onclick="addNotice()">Publish notice</button>
+<h3>Announce winner</h3><input id="rTournament" placeholder="Tournament name"><input id="rWinner" placeholder="Winner username"><input id="rUID" placeholder="Free Fire UID"><input id="rPrize" type="number" min="0" placeholder="Prize Rs"><input id="rPoints" type="number" min="0" placeholder="Points earned"><button onclick="addResult()">Publish result</button>
+<h3>Review wallet requests</h3><div id="adminRequests"></div>
+<h3>App settings</h3><input id="newBrand" placeholder="App name"><input id="supportNumber" placeholder="WhatsApp number with country code, digits only"><input id="newPin" type="password" placeholder="New admin PIN (demo only)"><button onclick="saveSettings()">Save settings</button>
+<h3>Danger zone</h3><button class="danger" onclick="adminLock()">Lock admin panel</button>
+</div></section>
+</main><footer>FF Tournament demo • Local device storage • Not a real payment service</footer>
+<script>
+const $=id=>document.getElementById(id);
+const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+let current=get('ff_current',null), adminOpen=false;
+function say(t){$('msg').textContent=t}
+function showTab(name){document.querySelectorAll('main section[id^="tab-"]').forEach(s=>s.classList.add('hidden'));$('tab-'+name).classList.remove('hidden');if(name==='wallet')renderWallet();if(name==='results')renderResults();if(name==='leaderboard')renderLeaderboard();if(name==='notices')renderNotices();if(name==='admin')renderAdmin()}
+function register(){let username=$('username').value.trim(),email=$('email').value.trim().toLowerCase(),password=$('password').value;if(!username||!email||password.length<6)return say('Username, email aur 6+ character password bharo.');let users=get('ff_users');if(users.some(u=>u.email===email))return say('Email pehle se registered hai. Login karo.');users.push({username,email,password,points:0});put('ff_users',users);current=email;put('ff_current',current);updateSession();say('Account create ho gaya.')}
+function login(){let email=$('email').value.trim().toLowerCase(),password=$('password').value;let u=get('ff_users').find(x=>x.email===email&&x.password===password);if(!u)return say('Email ya password match nahi hua.');current=email;put('ff_current',current);updateSession();say('Login successful.')}
+function logout(){current=null;localStorage.removeItem('ff_current');updateSession();say('Logout ho gaya.')}
+function user(){return get('ff_users').find(u=>u.email===current)}
+function updateSession(){let u=user();$('session').classList.toggle('hidden',!u);$('logoutBtn').classList.toggle('hidden',!u);$('session').textContent=u?'Logged in as '+u.username+' ('+u.email+')':'';renderWallet();renderTournaments()}
+function createTournament(){let name=$('tName').value.trim(),fee=+$('tFee').value,prize=+$('tPrize').value,slots=+$('tSlots').value;if(!name||!Number.isFinite(fee)||fee<0||!Number.isFinite(prize)||prize<0||!Number.isInteger(slots)||slots<1)return say('Tournament details sahi bharo.');let a=get('ff_tournaments');a.push({id:Date.now(),name,game:$('tGame').value.trim(),fee,prize,slots,joined:[],roomId:'',roomPass:''});put('ff_tournaments',a);renderTournaments();say('Tournament create ho gaya.')}
+function renderTournaments(){let q=($('search')?.value||'').toLowerCase();let ts=get('ff_tournaments').filter(t=>(t.name+' '+t.game).toLowerCase().includes(q));$('tournamentList').innerHTML=ts.map(t=>`<div class="item"><h3>${esc(t.name)}</h3><p>${esc(t.game||'Free Fire')} • Fee Rs. ${t.fee} • Prize Rs. ${t.prize}</p><p>Slots: ${t.joined.length}/${t.slots}</p>${current&&t.joined.includes(current)?'<span class="badge">Joined</span>':'<button onclick="joinTournament('+t.id+')">Join tournament</button>'}<button class="secondary" onclick="showRoom('+t.id+')">Room details</button></div>`).join('')||'<p>No tournaments found.</p>'}
+function joinTournament(id){if(!current)return say('Pehle login karo.');let ts=get('ff_tournaments'),t=ts.find(x=>x.id===id),u=user();if(!t||!u)return;if(t.joined.includes(current))return say('Tum pehle hi join kar chuke ho.');if(t.joined.length>=t.slots)return say('Tournament full hai.');let balances=get('ff_balances',{});balances[current]=balances[current]||0;if(balances[current]<t.fee)return say('Wallet balance kam hai. Demo wallet mein admin approval ke baad balance aayega.');balances[current]-=t.fee;t.joined.push(current);put('ff_balances',balances);put('ff_tournaments',ts);renderTournaments();renderWallet();say('Tournament join ho gaya.')}
+function showRoom(id){let t=get('ff_tournaments').find(x=>x.id===id);if(!t)return; if(!current||!t.joined.includes(current))return say('Room details sirf joined players ke liye hain.');say('Room ID: '+(t.roomId||'Abhi available nahi')+' | Password: '+(t.roomPass||'Abhi available nahi'))}
+function saveRoom(){let name=$('roomTournament').value.trim(),ts=get('ff_tournaments'),t=ts.find(x=>x.name.toLowerCase()===name.toLowerCase());if(!t)return say('Tournament name match nahi hua.');t.roomId=$('roomId').value.trim();t.roomPass=$('roomPass').value.trim();put('ff_tournaments',ts);say('Room details save ho gayi.')}
+function balance(){return get('ff_balances',{})[current]||0}
+function submitRequest(type,amount,method,reference){if(!current)return say('Pehle login karo.');if(!Number.isFinite(amount)||amount<=0)return say('Valid amount enter karo.');let req=get('ff_requests');req.unshift({id:Date.now(),email:current,type,amount,method,reference,status:'Pending'});put('ff_requests',req);renderWallet();renderAdmin();say('Request submit ho gayi; admin review ka intezar karo.')}
+function deposit(){submitRequest('Deposit',+$('depAmount').value,$('depMethod').value,$('depTxn').value.trim())}
+function withdraw(){let amount=+$('withAmount').value;if(amount>balance())return say('Demo wallet balance se zyada withdraw nahi kar sakte.');submitRequest('Withdraw',amount,$('withMethod').value,$('withAccount').value.trim())}
+function renderWallet(){if(!current)return $('balance').textContent='Rs. 0';$('balance').textContent='Rs. '+balance();$('myRequests').innerHTML=get('ff_requests').filter(r=>r.email===current).map(r=>`<div class="item">${r.type}: Rs. ${r.amount} — ${esc(r.status)} (${esc(r.method)})</div>`).join('')||'<p>No requests.</p>'}
+function renderAdmin(){if(!adminOpen)return;let req=get('ff_requests');$('adminRequests').innerHTML=req.map(r=>`<div class="item">${esc(r.type)} Rs.${r.amount} | ${esc(r.email)} | ${esc(r.method)} | Ref: ${esc(r.reference||'-')} | ${esc(r.status)}<br><button onclick="reviewRequest(${r.id},true)">Approve</button><button class="danger" onclick="reviewRequest(${r.id},false)">Reject</button></div>`).join('')||'<p>No requests.</p>'}
+function reviewRequest(id,approve){let rs=get('ff_requests'),r=rs.find(x=>x.id===id);if(!r||r.status!=='Pending')return say('Request pehle review ho chuki hai.');if(approve){let b=get('ff_balances',{});b[r.email]=b[r.email]||0;if(r.type==='Deposit')b[r.email]+=r.amount;else{if(b[r.email]<r.amount)return say('User ka balance kam hai.');b[r.email]-=r.amount;}put('ff_balances',b);r.status='Approved'}else r.status='Rejected';put('ff_requests',rs);renderAdmin();renderWallet();say('Request '+r.status+'. Demo approval only.')}
+function addNotice(){let title=$('nTitle').value.trim(),text=$('nText').value.trim();if(!title||!text)return say('Notice title aur details bharo.');let ns=get('ff_notices');ns.unshift({title,text,date:new Date().toLocaleString()});put('ff_notices',ns);$('nTitle').value='';$('nText').value='';renderNotices();say('Notice publish ho gaya.')}
+function renderNotices(){$('noticeList').innerHTML=get('ff_notices').map(n=>`<div class="item"><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><small>${esc(n.date)}</small></div>`).join('')||'<p>Abhi koi notice nahi.</p>'}
+function addResult(){let tournament=$('rTournament').value.trim(),winner=$('rWinner').value.trim(),uid=$('rUID').value.trim(),prize=+$('rPrize').value,points=+$('rPoints').value;if(!tournament||!winner||!uid||prize<0||points<0)return say('Result details bharo.');let rs=get('ff_results');rs.unshift({tournament,winner,uid,prize,points,date:new Date().toLocaleDateString()});put('ff_results',rs);let users=get('ff_users'),u=users.find(x=>x.username.toLowerCase()===winner.toLowerCase());if(u){u.points=(u.points||0)+points;put('ff_users',users)}renderResults();renderLeaderboard();say('Result publish ho gaya.')}
+function renderResults(){$('resultsList').innerHTML=get('ff_results').map(r=>`<div class="item"><h3>🏆 ${esc(r.tournament)}</h3><p>Winner: ${esc(r.winner)} | UID: ${esc(r.uid)}</p><p>Prize: Rs. ${r.prize} • Points: ${r.points}</p><small>${esc(r.date)}</small></div>`).join('')||'<p>Results abhi available nahi.</p>'}
+function renderLeaderboard(){let us=get('ff_users').sort((a,b)=>(b.points||0)-(a.points||0));$('leaderboardList').innerHTML=us.map((u,i)=>`<div class="item">#${i+1} ${esc(u.username)} — ${u.points||0} points</div>`).join('')||'<p>Players abhi nahi.</p>'}
+function adminUnlock(){if($('adminPin').value!==get('ff_admin_pin','1234'))return say('Admin PIN ghalat hai.');adminOpen=true;$('adminControls').classList.remove('hidden');$('adminLogin').classList.add('hidden');renderAdmin();say('Admin panel unlocked.')}
+function adminLock(){adminOpen=false;$('adminControls').classList.add('hidden');$('adminLogin').classList.remove('hidden');$('adminPin').value='';say('Admin panel locked.')}
+function saveSettings(){let brand=$('newBrand').value.trim(),phone=$('supportNumber').value.replace(/\D/g,''),pin=$('newPin').value;if(brand){put('ff_brand',brand);$('brandTitle').textContent=brand;document.title=brand}if(phone)put('ff_support',phone);if(pin.length>=4)put('ff_admin_pin',pin);say('Settings save ho gayi. Demo security public app ke liye kaafi nahi.')}
+function contactSupport(){let p=get('ff_support','');if(!p)return say('Admin panel mein WhatsApp number set karo.');location.href='https://wa.me/'+p}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+if(get('ff_brand')){$('brandTitle').textContent=get('ff_brand');document.title=get('ff_brand')}
+updateSession();renderTournaments();renderResults();renderLeaderboard();renderNotices();
+</script>
+</body></html>'''
+(base/"index.html").write_text(html, encoding="utf-8")
+(base/"README.txt").write_text("""FF Tournament - all-in-one demo
+1. Extract the ZIP in Acode.
+2. Open index.html and preview it.
+3. Admin demo PIN is 1234. Unlock admin to create tournaments, notices, results, set room details, review demo wallet requests and set app name/support number.
+4. This is a localStorage prototype. Data is saved only in this browser/device and can be edited by users. Login/admin PIN are not secure. Deposit/withdraw are requests only; approval does not transfer money. Do not use real money or real passwords.
+5. For a public multi-user app, connect a secure backend/database, authentication, server-side authorization and legitimate payment provider. An HTML file is not an APK; wrap/build with an Android project or trusted PWA-to-APK workflow.
+""", encoding="utf-8")
+zip_path=Path("/mnt/data/FF_Tournament_All_12_Features_Demo.zip")
+with zipfile.ZipFile(zip_path,"w",zipfile.ZIP_DEFLATED) as z:
+    z.write(base/"index.html","FF_Tournament/index.html")
+    z.write(base/"README.txt","FF_Tournament/README.txt")
+print(f"Created: {zip_path}\nContains index.html with features 1-11 as a local demo, plus README. Feature 12 (APK) needs a separate Android build step.")
+F Tournament - all-in-one demo
+1. Extract the ZIP in Acode.
+2. Open index.html and preview it.
+3. Admin demo PIN is 1234. Unlock admin to create tournaments, notices, results, set room details, review demo wallet requests and set app name/support number.
+4. This is a localStorage prototype. Data is saved only in this browser/device and can be edited by users. Login/admin PIN are not secure. Deposit/withdraw are requests only; approval does not transfer money. Do not use real money or real passwords.
+5. For a public multi-user app, connect a secure backend/database, authentication, server-side authorization and legitimate payment provider. An HTML file is not an APK; wrap/build with an Android project or trusted PWA-to-APK workflow.
+<section class="tournament-box">
+  <h2>🔥 Free Fire Tournaments</h2>
+
+  <div id="tournamentList"></div>
+</section>
+
+.tournament-box {
+  background: #101820;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.tournament-card {
+  background: #1b2a38;
+  border: 1px solid #405366;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 10px;
+}
+
+.tournament-card button {
+  background: #18b56b;
+  color: #06150d;
+  padding: 11px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.slot-info {
+  color: #ffbf36;
+}
+
+const demoTournaments = [
+  {
+    id: 1,
+    name: "Solo Match",
+    fee: 50,
+    prize: 500,
+    slots: 48,
+    joined: []
+  },
+  {
+    id: 2,
+    name: "Squad Match",
+    fee: 100,
+    prize: 1000,
+    slots: 25,
+    joined: []
+  }
+];
+
+function showTournaments() {
+  const list = document.getElementById("tournamentList");
+
+  list.innerHTML = demoTournaments.map(t => `
+    <div class="tournament-card">
+      <h3>${t.name}</h3>
+      <p>Entry Fee: Rs. ${t.fee}</p>
+      <p>Prize: Rs. ${t.prize}</p>
+      <p class="slot-info">
+        Slots: ${t.joined.length}/${t.slots}
+      </p>
+      <button onclick="joinTournament(${t.id})">
+        Join Tournament
+      </button>
+    </div>
+  `).join("");
+}
+
+function joinTournament(id) {
+  const email = localStorage.getItem("ff_current");
+  if (!email) {
+    alert("Pehle login karo!");
+    return;
+  }
+
+  const tournament = demoTournaments.find(t => t.id === id);
+
+  if (tournament.joined.includes(email)) {
+    alert("Tum pehle hi join kar chuke ho!");
+    return;
+  }
+
+  if (tournament.joined.length >= tournament.slots) {
+    alert("Tournament full hai!");
+    return;
+  }
+
+  const balances = JSON.parse(
+    localStorage.getItem("ff_balances") || "{}"
+  );
+
+  const balance = balances[email] || 0;
+
+  if (balance < tournament.fee) {
+    alert("Wallet balance kam hai!");
+    return;
+  }
+
+  balances[email] = balance - tournament.fee;
+  localStorage.setItem("ff_balances", JSON.stringify(balances));
+
+  tournament.joined.push(email);
+  alert("Tournament join ho gaya!");
+
+  showTournaments();
+}
+
+showTournaments();
+
+<section class="result-box">
+  <h2>🏆 Tournament Results</h2>
+
+  <div id="resultList"></div>
+
+  <div id="adminResultForm">
+    <h3>Announce Winner</h3>
+
+    <input id="resultTournament"
+           placeholder="Tournament name">
+
+    <input id="resultWinner"
+           placeholder="Winner username">
+
+    <input id="resultUID"
+           placeholder="Free Fire UID">
+
+    <input id="resultPrize"
+           type="number"
+           min="0"
+           placeholder="Prize amount (Rs.)">
+
+    <input id="resultPoints"
+           type="number"
+           min="0"
+           placeholder="Points">
+
+    <button onclick="announceWinner()">
+      Publish Result
+    </button>
+  </div>
+</section>
+
+.result-box {
+  background: #111b26;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 12px 0;
+}
+
+.result-box input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 7px 0;
+  border-radius: 8px;
+  border: 1px solid #405366;
+}
+
+.result-card {
+  background: #203329;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #347b51;
+}
+
+.result-box button {
+  background: #18b56b;
+  color: #06150d;
+  padding: 11px 15px;
+  border: 0;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+function announceWinner() {
+  // Demo: admin login ka status check karo.
+  // Real app mein admin permission server se verify honi chahiye.
+  const tournament =
+    document.getElementById("resultTournament").value.trim();
+
+  const winner =
+    document.getElementById("resultWinner").value.trim();
+
+  const uid =
+    document.getElementById("resultUID").value.trim();
+
+  const prizeText =
+    document.getElementById("resultPrize").value;
+
+  const pointsText =
+    document.getElementById("resultPoints").value;
+
+  const prize = Number(prizeText);
+  const points = Number(pointsText);
+
+  if (
+    !tournament ||
+    !winner ||
+    !uid ||
+    prizeText === "" ||
+    pointsText === "" ||
+    !Number.isFinite(prize) ||
+    !Number.isFinite(points) ||
+    prize < 0 ||
+    points < 0
+  ) {
+    alert("Tamam details sahi bharo!");
+    return;
+  }
+
+  const results = JSON.parse(
+    localStorage.getItem("ffResults") || "[]"
+  );
+
+  results.unshift({
+    id: Date.now(),
+    tournament,
+    winner,
+    uid,
+    prize,
+    points,
+    date: new Date().toLocaleDateString()
+  });
+
+  localStorage.setItem("ffResults", JSON.stringify(results));
+
+  displayResults();
+
+  alert("🏆 Winner result publish ho gaya!");
+
+  document.getElementById("resultTournament").value = "";
+  document.getElementById("resultWinner").value = "";
+  document.getElementById("resultUID").value = "";
+  document.getElementById("resultPrize").value = "";
+  document.getElementById("resultPoints").value = "";
+}
+
+function displayResults() {
+  const results = JSON.parse(
+    localStorage.getItem("ffResults") || "[]"
+  );
+
+  document.getElementById("resultList").innerHTML =
+    results.map(r => `
+      <div class="result-card">
+        <h3>🏆 ${escapeResultText(r.tournament)}</h3>
+        <p>Winner: ${escapeResultText(r.winner)}</p>
+        <p>Free Fire UID: ${escapeResultText(r.uid)}</p>
+        <p>Prize: Rs. ${Number(r.prize)}</p>
+        <p>Points: ${Number(r.points)}</p>
+        <small>${escapeResultText(r.date)}</small>
+      </div>
+    `).join("") || "<p>Abhi koi result publish nahi hua.</p>";
+}
+
+function escapeResultText(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+displayResults();
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF Battle Arena</title>
+
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #10131c;
+  color: white;
+}
+header {
+  background: #ff6a00;
+  padding: 18px 12px;
+  text-align: center;
+}
+.logo {
+  font-size: 38px;
+}
+header h1 { margin: 5px 0; }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px;
+  background: #1b2030;
+}
+button, .btn {
+  border: 0;
+  border-radius: 7px;
+  padding: 10px 13px;
+  background: #ff6a00;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+nav button { background: #343b50; }
+main { padding: 14px; max-width: 800px; margin: auto; }
+.card {
+  background: #1b2030;
+  border: 1px solid #343b50;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 14px;
+}
+h2 { color: #ff9b4a; margin-top: 0; }
+input, textarea, select {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  margin: 8px 0;
+  border: 1px solid #505970;
+  border-radius: 7px;
+  background: #10131c;
+  color: white;
+}
+.notice {
+  background: #332719;
+  border-left: 4px solid #ff9b4a;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+.small { color: #c1c7d5; font-size: 13px; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+table { width: 100%; border-collapse: collapse; }
+td, th {
+  text-align: left;
+  padding: 9px 5px;
+  border-bottom: 1px solid #343b50;
+}
+.hidden { display: none; }
+a { color: #ffb47e; }
+footer { text-align: center; padding: 20px; color: #aab0bf; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo" id="logo">🔥</div>
+  <h1 id="appTitle">FF BATTLE ARENA</h1>
+  <div>Free Fire Tournament App</div>
+</header>
+
+<nav>
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('notices')">Notices</button>
+  <button onclick="showPage('leaderboard')">Leaderboard</button>
+  <button onclick="showPage('room')">Room Details</button>
+  <button onclick="showPage('support')">Support</button>
+  <button onclick="showPage('admin')">Admin</button>
+</nav>
+
+<main>
+
+<section id="home">
+  <div class="card">
+    <h2>Welcome, Player!</h2>
+    <p>Apne tournament ki updates, points aur room details yahan dekhein.</p>
+    <label>Apna player name</label>
+    <input id="playerName" placeholder="Free Fire name">
+    <button onclick="savePlayer()">Save Player Name</button>
+    <p id="playerMessage" class="small"></p>
+  </div>
+
+  <div class="card">
+    <h2>📢 Latest Notice</h2>
+    <div id="homeNotice">Abhi koi notice nahi hai.</div>
+  </div>
+
+  <div class="card">
+    <h2>🏆 Leaderboard Preview</h2>
+    <div id="homeLeaders"></div>
+  </div>
+</section>
+
+<section id="notices" class="hidden">
+  <div class="card">
+    <h2>📢 Tournament Notices</h2>
+    <div id="noticeList"></div>
+  </div>
+</section>
+
+<section id="leaderboard" class="hidden">
+  <div class="card">
+    <h2>🏆 Player Leaderboard</h2>
+    <p class="small">Points admin update karta hai.</p>
+    <div id="leaderList"></div>
+  </div>
+</section>
+
+<section id="room" class="hidden">
+  <div class="card">
+    <h2>🎮 Room ID & Password</h2>
+    <p id="roomTournament">Tournament: Abhi set nahi hua</p>
+    <p>Room ID: <strong id="roomId">Abhi available nahi</strong></p>
+    <p>Password: <strong id="roomPassword">Abhi available nahi</strong></p>
+    <p class="small">Room details admin ke set karne ke baad yahan nazar aayengi.</p>
+  </div>
+</section>
+
+<section id="support" class="hidden">
+  <div class="card">
+    <h2>💬 WhatsApp Support</h2>
+    <p>Registration ya tournament ke masle ke liye support se rabta karein.</p>
+    <a id="whatsappLink" class="btn" href="https://wa.me/923001234567"
+       target="_blank" rel="noopener">Chat on WhatsApp</a>
+    <p class="small">Admin panel mein apna WhatsApp number set karein.</p>
+  </div>
+</section>
+
+<section id="admin" class="hidden">
+  <div class="card" id="adminLogin">
+    <h2>🔐 Admin Login</h2>
+    <p class="small">Demo PIN: 1234 — ise live app mein secure samajh kar use na karein.</p>
+    <input id="adminPin" type="password" placeholder="Admin PIN">
+    <button onclick="loginAdmin()">Login</button>
+    <p id="loginMessage" class="small"></p>
+  </div>
+
+  <div id="adminPanel" class="hidden">
+
+    <div class="card">
+      <h2>App Name & Logo</h2>
+      <input id="newAppName" placeholder="App ka naam">
+      <input id="newLogo" placeholder="Logo emoji, jaise 🔥">
+      <button onclick="saveBrand()">Save Branding</button>
+    </div>
+
+    <div class="card">
+      <h2>📢 Publish Notice</h2>
+      <input id="noticeTitle" placeholder="Notice title">
+      <textarea id="noticeText" placeholder="Notice ki details"></textarea>
+      <button onclick="addNotice()">Publish Notice</button>
+      <button onclick="clearNotices()">Delete All Notices</button>
+    </div>
+
+    <div class="card">
+      <h2>🏆 Add / Update Player Points</h2>
+      <input id="scoreName" placeholder="Player ka naam">
+      <input id="scorePoints" type="number" placeholder="Total points">
+      <button onclick="saveScore()">Save Points</button>
+      <div id="adminScores"></div>
+    </div>
+
+    <div class="card">
+      <h2>🎮 Set Room Details</h2>
+      <input id="tournamentName" placeholder="Tournament name">
+      <input id="newRoomId" placeholder="Room ID">
+      <input id="newRoomPassword" placeholder="Room password">
+      <button onclick="saveRoom()">Save Room Details</button>
+    </div>
+
+    <div class="card">
+      <h2>💬 WhatsApp Support Number</h2>
+      <p class="small">Country code ke saath number likhein, + ya spaces ke baghair. Misal: 923001234567</p>
+      <input id="supportNumber" type="tel" placeholder="923001234567">
+      <button onclick="saveSupport()">Save WhatsApp Number</button>
+    </div>
+
+    <div class="card">
+      <h2>Admin Security</h2>
+      <input id="oldPin" type="password" placeholder="Current PIN">
+      <input id="newPin" type="password" placeholder="New PIN (4–12 digits)">
+      <button onclick="changePin()">Change PIN</button>
+      <button onclick="logoutAdmin()">Logout Admin</button>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  FF Battle Arena • Tournament Demo
+</footer>
+
+<script>
+const KEY = "ff_battle_arena_v1";
+
+const defaults = {
+  appName: "FF BATTLE ARENA",
+  logo: "🔥",
+  notices: [],
+  scores: [],
+  tournament: "",
+  roomId: "",
+  roomPassword: "",
+  support: "923001234567",
+  pin: "1234",
+  player: ""
+};
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+    return {...defaults, ...saved};
+  } catch (e) {
+    return {...defaults};
+  }
+}
+
+let data = loadData();
+let adminLoggedIn = false;
+
+function saveData() {
+  localStorage.setItem(KEY, JSON.stringify(data));
+  renderAll();
+}
+
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
+function showPage(page) {
+  document.querySelectorAll("main section").forEach(section => {
+    section.classList.add("hidden");
+  });
+  document.getElementById(page).classList.remove("hidden");
+  if (page === "admin" && !adminLoggedIn) {
+    document.getElementById("adminLogin").classList.remove("hidden");
+    document.getElementById("adminPanel").classList.add("hidden");
+  }
+}
+
+function savePlayer() {
+  const name = document.getElementById("playerName").value.trim();
+  if (!name) return alert("Player name likhein.");
+  data.player = name;
+  saveData();
+  document.getElementById("playerMessage").textContent =
+    "Player name save ho gaya: " + name;
+}
+
+function loginAdmin() {
+  const pin = document.getElementById("adminPin").value;
+  if (pin !== data.pin) {
+    document.getElementById("loginMessage").textContent = "Ghalat PIN!";
+    return;
+  }
+  adminLoggedIn = true;
+  document.getElementById("adminLogin").classList.add("hidden");
+  document.getElementById("adminPanel").classList.remove("hidden");
+  document.getElementById("newAppName").value = data.appName;
+  document.getElementById("newLogo").value = data.logo;
+  document.getElementById("supportNumber").value = data.support;
+  document.getElementById("tournamentName").value = data.tournament;
+  document.getElementById("newRoomId").value = data.roomId;
+  document.getElementById("newRoomPassword").value = data.roomPassword;
+  renderAll();
+}
+
+function requireAdmin() {
+  if (!adminLoggedIn) {
+    alert("Pehle Admin Login karein.");
+    return false;
+  }
+  return true;
+}
+
+function saveBrand() {
+  if (!requireAdmin()) return;
+  const name = document.getElementById("newAppName").value.trim();
+  const logo = document.getElementById("newLogo").value.trim();
+  if (!name || !logo) return alert("App name aur logo likhein.");
+  data.appName = name;
+  data.logo = logo;
+  saveData();
+  alert("App branding save ho gayi.");
+}
+
+function addNotice() {
+  if (!requireAdmin()) return;
+  const title = document.getElementById("noticeTitle").value.trim();
+  const text = document.getElementById("noticeText").value.trim();
+  if (!title || !text) return alert("Title aur notice likhein.");
+  data.notices.unshift({title, text, date: new Date().toLocaleString()});
+  document.getElementById("noticeTitle").value = "";
+  document.getElementById("noticeText").value = "";
+  saveData();
+  alert("Notice publish ho gaya.");
+}
+
+function clearNotices() {
+  if (!requireAdmin()) return;
+  if (!confirm("Kya aap tamam notices delete karna chahte hain?")) return;
+  data.notices = [];
+  saveData();
+}
+
+function saveScore() {
+  if (!requireAdmin()) return;
+  const name = document.getElementById("scoreName").value.trim();
+  const points = Number(document.getElementById("scorePoints").value);
+  if (!name || document.getElementById("scorePoints").value === "" ||
+      !Number.isFinite(points) || points < 0) {
+    return alert("Player name aur valid non-negative points likhein.");
+  }
+
+  const existing = data.scores.find(
+    item => item.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (existing) existing.points = points;
+  else data.scores.push({name, points});
+
+  document.getElementById("scoreName").value = "";
+  document.getElementById("scorePoints").value = "";
+  saveData();
+}
+
+function deleteScore(index) {
+  if (!requireAdmin()) return;
+  if (!confirm("Is player ko leaderboard se remove karein?")) return;
+  data.scores.splice(index, 1);
+  saveData();
+}
+
+function saveRoom() {
+  if (!requireAdmin()) return;
+  data.tournament = document.getElementById("tournamentName").value.trim();
+  data.roomId = document.getElementById("newRoomId").value.trim();
+  data.roomPassword = document.getElementById("newRoomPassword").value.trim();
+  saveData();
+  alert("Room details save ho gayi.");
+}
+
+function saveSupport() {
+  if (!requireAdmin()) return;
+  const number = document.getElementById("supportNumber").value.trim();
+  if (!/^[0-9]{8,15}$/.test(number)) {
+    return alert("Country code ke saath valid number likhein.");
+  }
+  data.support = number;
+  saveData();
+  alert("WhatsApp number save ho gaya.");
+}
+
+function changePin() {
+  if (!requireAdmin()) return;
+  const oldPin = document.getElementById("oldPin").value;
+  const newPin = document.getElementById("newPin").value;
+  if (oldPin !== data.pin) return alert("Current PIN ghalat hai.");
+  if (!/^[0-9]{4,12}$/.test(newPin)) {
+    return alert("PIN 4 se 12 digits ka hona chahiye.");
+  }
+  data.pin = newPin;
+  saveData();
+  document.getElementById("oldPin").value = "";
+  document.getElementById("newPin").value = "";
+  alert("PIN change ho gaya.");
+}
+
+function logoutAdmin() {
+  adminLoggedIn = false;
+  document.getElementById("adminPanel").classList.add("hidden");
+  document.getElementById("adminLogin").classList.remove("hidden");
+  document.getElementById("adminPin").value = "";
+  showPage("home");
+}
+
+function renderAll() {
+  document.title = data.appName;
+  document.getElementById("appTitle").textContent = data.appName;
+  document.getElementById("logo").textContent = data.logo;
+
+  const noticeHTML = data.notices.length
+    ? data.notices.map(n => `
+      <div class="notice">
+        <strong>${safeText(n.title)}</strong>
+        <p>${safeText(n.text).replace(/\n/g, "<br>")}</p>
+        <small>${safeText(n.date)}</small>
+      </div>`).join("")
+    : "<p>Abhi koi notice nahi hai.</p>";
+
+  document.getElementById("noticeList").innerHTML = noticeHTML;
+  document.getElementById("homeNotice").innerHTML =
+    data.notices.length ? `
+      <div class="notice">
+        <strong>${safeText(data.notices[0].title)}</strong>
+        <p>${safeText(data.notices[0].text)}</p>
+      </div>` : "Abhi koi notice nahi hai.";
+
+  const sorted = [...data.scores].sort((a,b) => b.points - a.points);
+  const leadersHTML = sorted.length
+    ? `<table><tr><th>Rank</th><th>Player</th><th>Points</th></tr>` +
+      sorted.map((p,i) => `<tr>
+        <td>${i+1}</td><td>${safeText(p.name)}</td>
+        <td>${p.points}</td></tr>`).join("") + "</table>"
+    : "<p>Abhi leaderboard khali hai.</p>";
+
+  document.getElementById("leaderList").innerHTML = leadersHTML;
+  document.getElementById("homeLeaders").innerHTML = sorted.slice(0,3).length
+    ? sorted.slice(0,3).map((p,i) =>
+        `<p>${i+1}. ${safeText(p.name)} — ${p.points} points</p>`
+      ).join("")
+    : "Abhi koi player score nahi hai.";
+
+  document.getElementById("roomTournament").textContent =
+    "Tournament: " + (data.tournament || "Abhi set nahi hua");
+  document.getElementById("roomId").textContent =
+    data.roomId || "Abhi available nahi";
+  document.getElementById("roomPassword").textContent =
+    data.roomPassword || "Abhi available nahi";
+
+  document.getElementById("whatsappLink").href =
+    "https://wa.me/" + data.support;
+
+  if (adminLoggedIn) {
+    document.getElementById("adminScores").innerHTML =
+      sorted.length ? sorted.map(p => {
+        const index = data.scores.indexOf(p);
+        return `<p>${safeText(p.name)}: ${p.points}
+        <button onclick="deleteScore(${index})">Delete</button></p>`;
+      }).join("") : "<p>No scores yet.</p>";
+  }
+}
+
+renderAll();
+if (data.player) document.getElementById("playerName").value = data.player;
+</script>
+</body>
+</html>
+<img src="logo.png" alt="App Logo"
+     style="width:80px;height:80px;object-fit:contain;">
+<div class="card">
+  <h2>App Name & Logo</h2>
+
+  <label>App ka naam</label>
+  <input id="newAppName" placeholder="FF Battle Arena">
+
+  <label>Logo select karein</label>
+  <input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp">
+
+  <img id="logoPreview"
+       alt="Logo Preview"
+       style="width:100px;height:100px;object-fit:contain;display:block;margin:10px 0;">
+
+  <button onclick="saveBrand()">Save Branding</button>
+</div>
+
+async function saveBrand() {
+  if (!requireAdmin()) return;
+
+  const name = document.getElementById("newAppName").value.trim();
+  const file = document.getElementById("logoFile").files[0];
+
+  if (!name) {
+    alert("App ka naam likhein.");
+    return;
+  }
+
+  if (file && file.size > 1024 * 1024) {
+    alert("Logo image 1 MB se chhoti honi chahiye.");
+    return;
+  }
+
+  data.appName = name;
+
+  if (file) {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      data.logoImage = reader.result;
+      saveData();
+      alert("App name aur logo save ho gaye!");
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    saveData();
+    alert("App name save ho gaya!");
+  }
+}
+document.getElementById("logo").textContent = data.logo;const logo = document.getElementById("logo");
+
+if (data.logoImage) {
+  logo.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = data.logoImage;
+  img.alt = "App Logo";
+  img.style.width = "80px";
+  img.style.height = "80px";
+  img.style.objectFit = "contain";
+  logo.appendChild(img);
+} else {
+  logo.textContent = data.logo || "🔥";
+}
+
+const preview = document.getElementById("logoPreview");
+if (preview) {
+  if (data.logoImage) {
+    preview.src = data.logoImage;
+    preview.style.display = "block";
+  } else {
+    preview.style.display = "none";
+  }
+}
+<button id="installBtn" style="
+  display:none;
+  width:90%;
+  margin:20px auto;
+  padding:15px;
+  background:#d4af37;
+  color:#111;
+  font-size:18px;
+  font-weight:bold;
+  border:0;
+  border-radius:12px;
+">
+  📲 INSTALL KAIVOR PK APP
+</button>
+
+<script>
+let installPrompt;
+
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (event) => {
+  event.preventDefault();
+  installPrompt = event;
+  installBtn.style.display = "block";
+});
+
+installBtn.addEventListener("click", async () => {
+  if (installPrompt) {
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    installBtn.style.display = "none";
+  } else {
+    alert(
+      "Install ke liye app ko supported browser mein HTTPS website se kholen. Acode Preview se direct install har phone par mumkin nahi."
+    );
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  installBtn.style.display = "none";
+  alert("KAIVOR PK App install ho gayi!");
+});
+</script>
